@@ -5,6 +5,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import android.content.Context;
 import android.opengl.Matrix;
 
 public class Sprite {
@@ -19,18 +20,23 @@ public class Sprite {
 	
 	private FloatBuffer mVertices;
 	
+	private FloatBuffer mTextureCoordinates;
+	
 	private ShortBuffer mDrawOrder;
 	
 	private float[] mColor;
 	
-	public Sprite(float top, float left, float width, float height) {
+	private int mTextureId;
+	
+	public Sprite(Context context, float top, float left, float width, float height, int textureId) {
 		super();
 		this.mTop = top;
 		this.mLeft = left;
 		this.mWidth = width;
 		this.mHeight = height;
+		this.mTextureId = Shaders.loadTexture(context, textureId);
 		
-		ByteBuffer bb = ByteBuffer.allocateDirect(12*4);
+		ByteBuffer bb = ByteBuffer.allocateDirect(4*3*4);
 		bb.order(ByteOrder.nativeOrder());
 		
 		mVertices = bb.asFloatBuffer();
@@ -39,6 +45,15 @@ public class Sprite {
 				                    1.0f*width, -1.0f*height, 0.0f,
 				                    1.0f*width,  0.0f,        0.0f });
 		mVertices.position(0);
+		
+		bb = ByteBuffer.allocateDirect(4*2*4);
+		bb.order(ByteOrder.nativeOrder());
+		mTextureCoordinates = bb.asFloatBuffer();
+		mTextureCoordinates.put(new float[] { 1.0f, 0.0f,
+											  1.0f, 1.0f,
+											  0.0f, 1.0f,
+											  0.0f, 0.0f });
+		mTextureCoordinates.position(0);
 		
 		bb = ByteBuffer.allocateDirect(6*2);
 		bb.order(ByteOrder.nativeOrder());
@@ -58,7 +73,7 @@ public class Sprite {
 		
 		mLeft += 0.001f;
 		
-		Shaders.render(6, mVertices, mDrawOrder, mColor, mMVPMatrix);
+		Shaders.render(6, mVertices, mTextureCoordinates, mDrawOrder, mTextureId, mColor, mMVPMatrix);
 	}
 	
 	

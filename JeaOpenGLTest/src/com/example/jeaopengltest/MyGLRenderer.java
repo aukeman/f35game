@@ -3,6 +3,7 @@ package com.example.jeaopengltest;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -14,11 +15,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private final float[] mViewMatrix = new float[16];
 	private final float[] mRotationMatrix = new float[16];
 	
-	private Sprite s = new Sprite(0f, 0f, 0.5f, 0.5f);
+	private Sprite sprite;
+	
+	private Context context;
+	
+	public MyGLRenderer(Context context){
+		
+		this.context = context;
+	}
 	
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		GLES20.glClearColor(0, 0, 0, 1);
+
+		 sprite = new Sprite( context, 0f, 0f, 0.5f, 0.5f, R.drawable.sprite);
+
+		 GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1);
 
 		Shaders.initialize();
 	}
@@ -42,7 +53,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 		
-		s.draw(mMVPMatrix);
+		sprite.draw(mMVPMatrix);
 		
 	}
 
