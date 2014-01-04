@@ -69,9 +69,9 @@ public class Sprite {
 	
 	public void draw(float[] mvpMatrix){
 
-		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, mTop, mLeft, 0);
+		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (int)mTop, (int)mLeft, 0);
 		
-		mLeft += 0.001f;
+		mLeft += 0.2f;
 		
 		Shaders.render(6, mVertices, mTextureCoordinates, mDrawOrder, mTextureId, mColor, mMVPMatrix);
 	}

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.util.Log;
+import android.view.View;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
@@ -18,6 +20,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private Sprite sprite;
 	
 	private Context context;
+	private View view;
 	
 	public MyGLRenderer(Context context){
 		
@@ -27,7 +30,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
-		 sprite = new Sprite( context, 0f, 0f, 0.5f, 0.5f, R.drawable.sprite);
+		 sprite = new Sprite( context, 0f, 0f, 16f, 16f, R.drawable.sprite);
 
 		 GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1);
 
@@ -38,9 +41,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	public void onSurfaceChanged(GL10 arg0, int width, int height) {
 		GLES20.glViewport(0, 0, width, height);
 		
+		int numberOfLines = 256;
+		
+		int pixelHeightFactor = height/numberOfLines;
+		
 		float ratio = (float)width / height;
 		
-		Matrix.orthoM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+		float top = (float)0.5f*height/pixelHeightFactor;
+		float bottom = -top;
+		float left = -(float)ratio*top;
+		float right = -left;
+
+		Log.i(MyGLRenderer.class.getName(), String.format("width: %d height: %d", width, height));
+		Log.i(MyGLRenderer.class.getName(), String.format("top: %f bottom: %f left: %f right: %f", top, bottom, left, right));
+		Log.i(MyGLRenderer.class.getName(), String.format("pixelHeightFactor: %d ratio: %f", pixelHeightFactor, ratio));
+		
+//		Matrix.orthoM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+		Matrix.orthoM(mProjectionMatrix, 0, left, right, bottom, top, 3, 7);
 	}
 	
 	
