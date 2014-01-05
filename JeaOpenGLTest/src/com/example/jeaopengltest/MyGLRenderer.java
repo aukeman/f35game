@@ -19,6 +19,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	
 	private Sprite sprite;
 	
+	private Background background;
+	
 	private Context context;
 	private View view;
 	
@@ -30,8 +32,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
-		 sprite = new Sprite( context, 0f, 0f, 16f, 16f, R.drawable.sprite);
+		 sprite = new Sprite( context, 16f, 16f, R.drawable.sprite, 2, 2 );
 
+		 background = new Background(16, 16, 16, 16, new Sprite[] { sprite } );
+			
+		 for ( int i = 0; i < 16; ++i ){
+			 for ( int j = 0; j < 16; ++j ){
+				 background.setTile(i, j, 0);
+			 }
+		 }
+		 
+		 background.setTile(0, 1, -1);
+		 
 		 GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1);
 
 		Shaders.initialize();
@@ -66,11 +78,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 		
-		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0, 0, 0, 0, 1, 0);
+		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0);
 		
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+	
+		long seconds = System.currentTimeMillis()/1000;
 		
-		sprite.draw(mMVPMatrix);
+		sprite.setTextureFrameIdx( (int)seconds%4 );
+		
+		
+		background.draw(mMVPMatrix);
+		
+//		sprite.draw(mMVPMatrix);
 		
 	}
 

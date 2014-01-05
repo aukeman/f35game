@@ -29,6 +29,7 @@ public class Shaders {
 		"varying vec2 vTexCoordinate;" +
 	    "uniform sampler2D uTexture; " +
 		"void main() {" +
+//	    " gl_FragColor = uColor;" +
 	    "  vec4 textureColor = texture2D(uTexture, vTexCoordinate);" +
 		"  bvec4 is_equal = equal( textureColor, vec4( 1.0, 0.0, 1.0, 1.0 ) );" +
 		"  if ( all(is_equal) ){" +
@@ -184,7 +185,8 @@ public class Shaders {
 		GLES20.glUniform1i(getTextureHandle(), 0);
 		
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, numberOfVertices, GLES20.GL_UNSIGNED_SHORT, drawOrder);
-		
+//		GLES20.glDrawElements(GLES20.GL_LINES, numberOfVertices, GLES20.GL_UNSIGNED_SHORT, drawOrder);
+			
 		GLES20.glDisableVertexAttribArray(getPositionHandle());
 		GLES20.glDisableVertexAttribArray(getTextureCoordinatesHandle());
 	}
