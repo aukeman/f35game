@@ -1,9 +1,10 @@
-package com.example.jeaopengltest;
+package com.aukeman.f35game.view;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+
 
 import android.content.Context;
 import android.opengl.Matrix;

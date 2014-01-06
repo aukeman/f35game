@@ -1,20 +1,21 @@
-package com.example.jeaopengltest;
+package com.aukeman.f35game.view;
+
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 
-public class MyGLSurfaceView extends GLSurfaceView {
+public class F35GameGLSurfaceView extends GLSurfaceView {
 
-	private final MyGLRenderer mRenderer;
+	private final F35GameGLRenderer mRenderer;
 	
-	public MyGLSurfaceView(Context context) {
+	public F35GameGLSurfaceView(Context context) {
 		super(context);
 		
 		
 		setEGLContextClientVersion(2);
 		
-		mRenderer = new MyGLRenderer(context);
+		mRenderer = new F35GameGLRenderer(context);
 		setRenderer(mRenderer);
 		
 		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);

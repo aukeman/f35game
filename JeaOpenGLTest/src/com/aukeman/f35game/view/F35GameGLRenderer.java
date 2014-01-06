@@ -1,7 +1,10 @@
-package com.example.jeaopengltest;
+package com.aukeman.f35game.view;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import com.aukeman.f35game.R;
+import com.aukeman.f35game.R.drawable;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -10,7 +13,7 @@ import android.opengl.Matrix;
 import android.util.Log;
 import android.view.View;
 
-public class MyGLRenderer implements GLSurfaceView.Renderer {
+public class F35GameGLRenderer implements GLSurfaceView.Renderer {
 
 	private final float[] mMVPMatrix = new float[16];
 	private final float[] mProjectionMatrix = new float[16];
@@ -24,7 +27,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private Context context;
 	private View view;
 	
-	public MyGLRenderer(Context context){
+	public F35GameGLRenderer(Context context){
 		
 		this.context = context;
 	}
@@ -64,9 +67,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		float left = -(float)ratio*top;
 		float right = -left;
 
-		Log.i(MyGLRenderer.class.getName(), String.format("width: %d height: %d", width, height));
-		Log.i(MyGLRenderer.class.getName(), String.format("top: %f bottom: %f left: %f right: %f", top, bottom, left, right));
-		Log.i(MyGLRenderer.class.getName(), String.format("pixelHeightFactor: %d ratio: %f", pixelHeightFactor, ratio));
+		Log.i(F35GameGLRenderer.class.getName(), String.format("width: %d height: %d", width, height));
+		Log.i(F35GameGLRenderer.class.getName(), String.format("top: %f bottom: %f left: %f right: %f", top, bottom, left, right));
+		Log.i(F35GameGLRenderer.class.getName(), String.format("pixelHeightFactor: %d ratio: %f", pixelHeightFactor, ratio));
 		
 //		Matrix.orthoM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
 		Matrix.orthoM(mProjectionMatrix, 0, left, right, bottom, top, 3, 7);

@@ -1,11 +1,13 @@
-package com.example.jeaopengltest;
+package com.aukeman.f35game;
+
+import com.aukeman.f35game.view.F35GameGLSurfaceView;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-public class MainActivity extends Activity {
+public class F35GameMainActivity extends Activity {
 
 	private GLSurfaceView mGLView;
 	
@@ -13,7 +15,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		mGLView = new MyGLSurfaceView(this);
+		mGLView = new F35GameGLSurfaceView(this);
 		
 		setContentView(mGLView);
 	}

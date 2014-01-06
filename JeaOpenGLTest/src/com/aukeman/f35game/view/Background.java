@@ -1,4 +1,5 @@
-package com.example.jeaopengltest;
+package com.aukeman.f35game.view;
+
 
 public class Background {
 
