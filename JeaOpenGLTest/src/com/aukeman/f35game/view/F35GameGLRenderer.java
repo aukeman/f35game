@@ -22,10 +22,20 @@ public class F35GameGLRenderer implements GLSurfaceView.Renderer {
 	
 	private Sprite sprite;
 	
+	private Sprite joystick;
+	
+	private Font font;
+	
 	private Background background;
 	
 	private Context context;
 	private View view;
+	
+	private int frameCount; 
+	private long timeLastFrameCountPosted;
+	private long lastFrameTime;
+	private String frameRateMessage = "";
+	
 	
 	public F35GameGLRenderer(Context context){
 		
@@ -36,7 +46,11 @@ public class F35GameGLRenderer implements GLSurfaceView.Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
 		 sprite = new Sprite( context, 16f, 16f, R.drawable.sprite, 2, 2 );
-
+		 joystick = new Sprite(context, 32, 32, R.drawable.joystick, 1, 1);
+		 	
+		 
+		 font = new Font(context);
+		 
 		 background = new Background(16, 16, 16, 16, new Sprite[] { sprite } );
 			
 		 for ( int i = 0; i < 16; ++i ){
@@ -79,18 +93,34 @@ public class F35GameGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onDrawFrame(GL10 arg0) {
 
+		long now = System.currentTimeMillis();
+		
+		if ( now % 1000 < lastFrameTime % 1000 ){
+			frameRateMessage = String.format("FPS: %.1f", (double)frameCount / (now - timeLastFrameCountPosted ) * 1000 );
+			timeLastFrameCountPosted = now;
+			frameCount = 0;
+		}
+		
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 		
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0);
 		
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 	
-		long seconds = System.currentTimeMillis()/1000;
+		long seconds = now/1000;
 		
 		sprite.setTextureFrameIdx( (int)seconds%4 );
 		
 		
 		background.draw(mMVPMatrix);
+		
+		font.drawString(mMVPMatrix, -100, -200, frameRateMessage);
+		
+		joystick.moveTo(100, -100);
+		joystick.draw(mMVPMatrix);
+		
+		lastFrameTime = now;
+		++frameCount;
 		
 //		sprite.draw(mMVPMatrix);
 		

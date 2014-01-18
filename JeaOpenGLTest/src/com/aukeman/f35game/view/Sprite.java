@@ -88,6 +88,10 @@ public class Sprite {
 		setTextureFrameIdx(0);
 	}
 	
+	public float getWidth() { return this.mWidth; }
+	
+	public float getHeight() { return this.mHeight; }
+	
 	public void draw(float[] mvpMatrix){
 		
 		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (int)mLeft, -(int)mTop, 0);
