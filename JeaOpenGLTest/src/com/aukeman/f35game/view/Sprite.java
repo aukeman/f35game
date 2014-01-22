@@ -43,6 +43,7 @@ public class Sprite {
 		this.mHeight = height;
 		this.mTextureId = Shaders.loadTexture(context, textureId);
 		
+	
 		ByteBuffer bb = ByteBuffer.allocateDirect(4*3*4);
 		bb.order(ByteOrder.nativeOrder());
 		
@@ -66,10 +67,10 @@ public class Sprite {
 				bb = ByteBuffer.allocateDirect(4*2*4);
 				bb.order(ByteOrder.nativeOrder());
 				mTextureCoordinates[idx] = bb.asFloatBuffer();
-				mTextureCoordinates[idx].put(new float[] { frameWidth*colIdx, frameHeight*(rowIdx+1),
-														   frameWidth*colIdx, frameHeight*rowIdx,
-														   frameWidth*(colIdx+1), frameHeight*rowIdx,
-														   frameWidth*(colIdx+1), frameHeight*(rowIdx+1) });
+				mTextureCoordinates[idx].put(new float[] { frameWidth*colIdx, frameHeight*(rowIdx),
+														   frameWidth*colIdx, frameHeight*(rowIdx+1),
+														   frameWidth*(colIdx+1), frameHeight*(rowIdx+1),
+														   frameWidth*(colIdx+1), frameHeight*(rowIdx) });
 				mTextureCoordinates[idx].position(0);
 				
 				++idx;
@@ -94,7 +95,7 @@ public class Sprite {
 	
 	public void draw(float[] mvpMatrix){
 		
-		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (int)mLeft, -(int)mTop, 0);
+		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (int)mLeft, (int)mTop, 0);
 		
 		Shaders.render(6, mVertices, mTextureCoordinates[mTextureFrameIdx], mDrawOrder, mTextureId, mColor, mMVPMatrix);
 	}
