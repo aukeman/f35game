@@ -46,6 +46,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	private Sprite sprite;
 	
 	private JoystickView joystick;
+	private ButtonView button;
 	
 	private Font font;
 	
@@ -91,7 +92,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 
 
 		sprite = new Sprite( getContext(), 16f, 16f, R.drawable.sprite, 2, 2 );
-		joystick = new JoystickView(getContext(), 0, 0, 32, 32);
+		joystick = new JoystickView(getContext(), 84, -220);
+		button = new ButtonView(getContext(), 84, 188);
 		 			 
 		 font = new Font(getContext());
 		 
@@ -111,9 +113,11 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mDrawables.clear();
 		mDrawables.add(background);
 		mDrawables.add(joystick);
+		mDrawables.add(button);
 		
 		mWidgets.clear();
 		mWidgets.add(joystick.getModel());
+		mWidgets.add(button.getModel());
 	}
 	
 	@Override

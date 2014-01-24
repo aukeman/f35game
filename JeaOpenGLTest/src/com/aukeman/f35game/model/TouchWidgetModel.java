@@ -1,6 +1,5 @@
 package com.aukeman.f35game.model;
 
-import android.util.Log;
 
 public class TouchWidgetModel {
 
@@ -52,7 +51,7 @@ public class TouchWidgetModel {
 		return mPointerIndex;
 	}
 
-	protected TouchWidgetModel(float top, float left, float height, float width){
+	public TouchWidgetModel(float top, float left, float height, float width){
 		mTop = top;
 		mLeft = left;
 		

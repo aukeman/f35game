@@ -11,11 +11,11 @@ public class JoystickView implements IDrawable{
 	
 	private JoystickModel mModel;
 	
-	public JoystickView( Context context, float top, float left, float width, float height){
-		mSprite = new Sprite(context, width, height, R.drawable.joystick, 1, 1);
+	public JoystickView( Context context, float top, float left){
+		mModel = new JoystickModel(top, left, 32, 32);
+
+		mSprite = new Sprite(context, mModel.getWidth(), mModel.getHeight(), R.drawable.joystick, 1, 1);
 		mSprite.moveTo(top, left);
-		
-		mModel = new JoystickModel(top, left, height, width);
 	}
 
 	public void draw(float[] mvpMatrix){
@@ -23,7 +23,6 @@ public class JoystickView implements IDrawable{
 		mSprite.moveTo(mModel.getTop() + mModel.getAxisY()*0.5f*mModel.getHeight(), 
 					   mModel.getLeft() + mModel.getAxisX()*0.5f*mModel.getWidth());
 		this.mSprite.draw(mvpMatrix);
-		
 	}
 	
 	public JoystickModel getModel(){
