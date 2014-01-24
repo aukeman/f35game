@@ -171,23 +171,32 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
-		float x = mViewport.getXFromScreenX(event.getX());
-		float y = mViewport.getYFromScreenY(event.getY());
+		int idx = event.getActionIndex();
+		float x = mViewport.getXFromScreenX(event.getX(idx));
+		float y = mViewport.getYFromScreenY(event.getY(idx));
 		
-		switch (event.getAction()){
+		switch (event.getActionMasked()){
 		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_POINTER_DOWN:
 			
-			this.joystick.getModel().handleDown(x, y);
+			this.joystick.getModel().handleDown(x, y, idx);
 			break;
 		
 		case MotionEvent.ACTION_MOVE:
 			
-			this.joystick.getModel().handleMove(x, y);
+			for ( idx = 0; idx < event.getPointerCount(); ++idx )
+			{
+				x = mViewport.getXFromScreenX(event.getX(idx));
+				y = mViewport.getYFromScreenY(event.getY(idx));
+				
+				this.joystick.getModel().handleMove(x, y, idx);
+			}
 			break;
 			
 		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_POINTER_UP:
 			
-			this.joystick.getModel().handleUp(x, y);
+			this.joystick.getModel().handleUp(x, y, idx);
 			break;
 		}
 		
