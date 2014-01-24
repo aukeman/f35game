@@ -1,11 +1,13 @@
 package com.aukeman.f35game.view;
 
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -13,7 +15,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.aukeman.f35game.R;
-import com.aukeman.f35game.model.JoystickModel;
+import com.aukeman.f35game.model.TouchWidgetModel;
 
 public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
@@ -41,8 +43,6 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	private final float[] mProjectionMatrix = new float[16];
 	private final float[] mViewMatrix = new float[16];
 
-	private final float[] mScreenToViewMatrix = new float[16];
-	
 	private Sprite sprite;
 	
 	private JoystickView joystick;
@@ -56,17 +56,23 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	private long lastFrameTime;
 	private String frameRateMessage = "";
 
-	private Viewport mViewport = new Viewport();
+	private Viewport mViewport;
+	
+	private List<TouchWidgetModel> mWidgets;
+	private List<IDrawable> mDrawables;
 	
 	public F35GameGLSurfaceView(Context context) {
 		super(context);
-		
 		
 		setEGLContextClientVersion(2);
 		
 		setRenderer(this);
 		
 		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+		
+		mViewport = new Viewport();
+		mWidgets = new LinkedList<TouchWidgetModel>();
+		mDrawables = new LinkedList<IDrawable>();
 		
 	}
 
@@ -83,6 +89,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
+
 		sprite = new Sprite( getContext(), 16f, 16f, R.drawable.sprite, 2, 2 );
 		joystick = new JoystickView(getContext(), 0, 0, 32, 32);
 		 			 
@@ -98,9 +105,15 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		 
 		 background.setTile(0, 1, -1);
 		 
-		 GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1);
-
+		GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		Shaders.initialize();
+		
+		mDrawables.clear();
+		mDrawables.add(background);
+		mDrawables.add(joystick);
+		
+		mWidgets.clear();
+		mWidgets.add(joystick.getModel());
 	}
 	
 	@Override
@@ -125,7 +138,6 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		Log.i(VIEW_LOG_TAG, String.format("top: %f bottom: %f left: %f right: %f", mViewport.top, mViewport.bottom, mViewport.left, mViewport.right));
 		Log.i(VIEW_LOG_TAG, String.format("pixelHeightFactor: %d ratio: %f", pixelHeightFactor, ratio));
 		
-//		Matrix.orthoM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
 		Matrix.orthoM(mProjectionMatrix, 0, mViewport.left, mViewport.right, mViewport.bottom, mViewport.top, 3, 7);
 
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0);
@@ -154,17 +166,14 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		sprite.setTextureFrameIdx( (int)seconds%4 );
 		
-		
-		background.draw(mMVPMatrix);
+		for (IDrawable d : mDrawables){
+			d.draw(mMVPMatrix);
+		}
 		
 		font.drawString(mMVPMatrix, -100, -200, frameRateMessage);
 		
-		joystick.draw(mMVPMatrix);
-		
 		lastFrameTime = now;
 		++frameCount;
-		
-//		sprite.draw(mMVPMatrix);
 		
 	}
 
@@ -179,24 +188,27 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN:
 			
-			this.joystick.getModel().handleDown(x, y, idx);
+			for (TouchWidgetModel w : mWidgets){
+				w.handleDown(x, y, idx);
+			}
+
 			break;
 		
 		case MotionEvent.ACTION_MOVE:
 			
-			for ( idx = 0; idx < event.getPointerCount(); ++idx )
-			{
-				x = mViewport.getXFromScreenX(event.getX(idx));
-				y = mViewport.getYFromScreenY(event.getY(idx));
-				
-				this.joystick.getModel().handleMove(x, y, idx);
+			for ( idx = 0; idx < event.getPointerCount(); ++idx )			{
+				for (TouchWidgetModel w : mWidgets){
+					w.handleMove(x, y, idx);
+				}
 			}
 			break;
 			
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_POINTER_UP:
 			
-			this.joystick.getModel().handleUp(x, y, idx);
+			for (TouchWidgetModel w : mWidgets){
+				w.handleUp(x, y, idx);
+			}
 			break;
 		}
 		

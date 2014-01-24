@@ -5,7 +5,7 @@ import android.content.Context;
 import com.aukeman.f35game.R;
 import com.aukeman.f35game.model.JoystickModel;
 
-public class JoystickView {
+public class JoystickView implements IDrawable{
 
 	private Sprite mSprite;
 	

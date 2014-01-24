@@ -1,7 +1,7 @@
 package com.aukeman.f35game.view;
 
 
-public class Background {
+public class Background implements IDrawable {
 
 	private int mTileIndices[][];
 	

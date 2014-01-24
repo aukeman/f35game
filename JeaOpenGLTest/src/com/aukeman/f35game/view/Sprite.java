@@ -9,7 +9,7 @@ import java.nio.ShortBuffer;
 import android.content.Context;
 import android.opengl.Matrix;
 
-public class Sprite {
+public class Sprite implements IDrawable{
 
 	private float mTop;
 	private float mLeft;
