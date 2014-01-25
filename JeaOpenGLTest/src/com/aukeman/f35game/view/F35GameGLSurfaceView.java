@@ -177,7 +177,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 			d.draw(mMVPMatrix);
 		}
 		
-		font.drawString(mMVPMatrix, -100, -200, frameRateMessage);
+		font.drawString(mMVPMatrix, mViewport.top+5, mViewport.left+5, frameRateMessage);
 		
 		lastFrameTime = now;
 		++frameCount;
