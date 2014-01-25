@@ -29,10 +29,6 @@ public class Sprite implements IDrawable{
 	
 	private int mTextureId;
 	
-	private int mTextureColumns;
-	
-	private int mTextureRows;
-	
 	private int mTextureFrameIdx;
 	
 	public Sprite(Context context, float width, float height, int textureId, int textureColumns, int textureRows) {
@@ -88,6 +84,10 @@ public class Sprite implements IDrawable{
 		
 		setTextureFrameIdx(0);
 	}
+	
+	public float getTop() { return this.mTop; }
+	
+	public float getLeft() { return this.mLeft; }
 	
 	public float getWidth() { return this.mWidth; }
 	

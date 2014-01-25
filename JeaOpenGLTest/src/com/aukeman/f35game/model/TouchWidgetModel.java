@@ -27,6 +27,11 @@ public class TouchWidgetModel {
 		return mLeft;
 	}
 	
+	public void moveTo( float top, float left ){
+		this.mTop = top;
+		this.mLeft = left;
+	}
+	
 	public float getWidth(){
 		return mWidth;
 	}
@@ -50,7 +55,7 @@ public class TouchWidgetModel {
 	public int getPointerIndex(){
 		return mPointerIndex;
 	}
-
+	
 	public TouchWidgetModel(float top, float left, float height, float width){
 		mTop = top;
 		mLeft = left;

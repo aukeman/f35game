@@ -92,12 +92,12 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 
 
 		sprite = new Sprite( getContext(), 16f, 16f, R.drawable.sprite, 2, 2 );
-		joystick = new JoystickView(getContext(), 84, -220);
-		button = new ButtonView(getContext(), 84, 188);
+		joystick = new JoystickView(getContext());
+		button = new ButtonView(getContext());
 		 			 
 		 font = new Font(getContext());
 		 
-		 background = new Background(16, 16, 16, 16, new Sprite[] { sprite } );
+		 background = new Background(16, 16, new Sprite[] { sprite } );
 			
 		 for ( int i = 0; i < 16; ++i ){
 			 for ( int j = 0; j < 16; ++j ){
@@ -148,9 +148,12 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
+		joystick.moveTo( mViewport.bottom - 1.5f*joystick.getHeight(), 
+				         mViewport.left + 0.5f*joystick.getWidth() );
 		
+		button.moveTo( mViewport.bottom - 1.5f*button.getHeight(), 
+					   mViewport.right - 1.5f*button.getWidth() );
 	}
-	
 	
 	@Override
 	public void onDrawFrame(GL10 arg0) {

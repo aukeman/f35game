@@ -11,13 +11,33 @@ public class JoystickView implements IDrawable{
 	
 	private JoystickModel mModel;
 	
-	public JoystickView( Context context, float top, float left){
-		mModel = new JoystickModel(top, left, 32, 32);
+	public JoystickView( Context context){
+		mModel = new JoystickModel(0, 0, 32, 32);
 
 		mSprite = new Sprite(context, mModel.getWidth(), mModel.getHeight(), R.drawable.joystick, 1, 1);
-		mSprite.moveTo(top, left);
+		mSprite.moveTo(0, 0);
+	}
+	
+	public float getTop(){
+		return mModel.getTop();
+	}
+	
+	public float getLeft(){
+		return mModel.getLeft();
+	}
+	
+	public float getWidth(){
+		return mModel.getWidth();
+	}
+	
+	public float getHeight(){
+		return mModel.getHeight();
 	}
 
+	public void moveTo(float top, float left){
+		mModel.moveTo(top, left);
+	}
+	
 	public void draw(float[] mvpMatrix){
 		
 		mSprite.moveTo(mModel.getTop() + mModel.getAxisY()*0.5f*mModel.getHeight(), 
