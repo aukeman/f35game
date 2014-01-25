@@ -95,7 +95,7 @@ public class Sprite implements IDrawable{
 	
 	public void draw(float[] mvpMatrix){
 		
-		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (int)mLeft, (int)mTop, 0);
+		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (float)Math.floor(mLeft), (float)Math.floor(mTop), 0);
 		
 		Shaders.render(6, mVertices, mTextureCoordinates[mTextureFrameIdx], mDrawOrder, mTextureId, mColor, mMVPMatrix);
 	}

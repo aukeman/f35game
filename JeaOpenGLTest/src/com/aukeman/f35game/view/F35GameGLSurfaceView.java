@@ -130,10 +130,11 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		float ratio = (float)width / height;
 		
-		mViewport.top = -(float)0.5f*height/pixelHeightFactor;
-		mViewport.bottom = -mViewport.top;
-		mViewport.left = (float)ratio*mViewport.top;
-		mViewport.right = -mViewport.left;
+		mViewport.top = 0.0f;
+		mViewport.left = 0.0f;
+		
+		mViewport.bottom = (float)height/pixelHeightFactor + mViewport.top;
+		mViewport.right = (float)ratio*(mViewport.bottom - mViewport.top) + mViewport.left; 
 
 		mViewport.screenWidth = width;
 		mViewport.screenHeight = height;
@@ -178,6 +179,33 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		}
 		
 		font.drawString(mMVPMatrix, mViewport.top+5, mViewport.left+5, frameRateMessage);
+		
+		float dx = joystick.getModel().getAxisX();
+		float dy = joystick.getModel().getAxisY();
+		
+		float pixelsPerSecond = 60.0f;
+		float frameLengthSeconds = (now - lastFrameTime) / 1000.0f;
+		
+		float distance = pixelsPerSecond * frameLengthSeconds;
+		
+		if ( dx < -0.25f ){
+			background.moveTo( background.getTop(), 
+							   background.getLeft()-distance );
+		}
+		else if ( 0.25f < dx){
+			background.moveTo( background.getTop(), 
+					   		   background.getLeft()+distance );
+		}
+		
+		if ( dy < -0.25f ){
+			background.moveTo( background.getTop()-distance, 
+							   background.getLeft() );			
+		}
+		else if ( 0.25f < dy ){
+			background.moveTo( background.getTop()+distance, 
+			   		   		   background.getLeft() );
+		}
+		
 		
 		lastFrameTime = now;
 		++frameCount;
