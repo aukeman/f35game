@@ -1,14 +1,8 @@
 package com.aukeman.f35game.model;
 
 
-public class TouchWidgetModel implements IUpdatable{
+public class TouchWidgetModel extends AbstractModel{
 
-	private float mTop;
-	private float mLeft; 
-	
-	private float mWidth;
-	private float mHeight;
-	
 	private float mInitialX;
 	private float mInitialY;
 	
@@ -21,27 +15,6 @@ public class TouchWidgetModel implements IUpdatable{
 	
 	private int mPointerIndex;
 
-	public float getTop(){
-		return mTop;
-	}
-	
-	public float getLeft(){
-		return mLeft;
-	}
-	
-	public void moveTo( float top, float left ){
-		this.mTop = top;
-		this.mLeft = left;
-	}
-	
-	public float getWidth(){
-		return mWidth;
-	}
-	
-	public float getHeight(){
-		return mHeight;
-	}
-	
 	public float getDiffX(){
 		return mCurrentX - mInitialX;
 	}
@@ -67,12 +40,10 @@ public class TouchWidgetModel implements IUpdatable{
 	}
 	
 	public TouchWidgetModel(float top, float left, float height, float width){
-		mTop = top;
-		mLeft = left;
+		super(height,width);
 		
-		mWidth = width;
-		mHeight = height;
-		
+		this.moveTo(top, left);
+
 		mDownLastFrame = false;
 		
 		reset();
@@ -93,8 +64,8 @@ public class TouchWidgetModel implements IUpdatable{
 	public void handleDown(float x, float y, int pointerIndex){
 		
 		if ( !mDown && 
-		     mLeft <= x && x <= mLeft + mWidth &&
-		     mTop <= y && y <= mTop + mHeight){
+		     getLeft() <= x && x <= getLeft() + getWidth() &&
+		     getTop() <= y && y <= getTop() + getHeight()){
 			
 			mInitialX = mCurrentX = x;
 			mInitialY = mCurrentY = y;
