@@ -150,6 +150,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		joystick.moveTo( mViewport.bottom - 1.5f*joystick.getHeight(), 
 				         mViewport.left + 0.5f*joystick.getWidth() );
 		
+		background.setPriority(-1.0f);
+		
 		button.moveTo( mViewport.bottom - 1.5f*button.getHeight(), 
 					   mViewport.right - 1.5f*button.getWidth() );
 	}

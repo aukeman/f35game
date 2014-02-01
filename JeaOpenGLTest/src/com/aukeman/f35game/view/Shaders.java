@@ -96,6 +96,8 @@ public class Shaders {
 		GLES20.glEnableVertexAttribArray(getTextureCoordinatesHandle());
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glUniform1i(getTextureHandle(), 0);
+		
+		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
 
 	}

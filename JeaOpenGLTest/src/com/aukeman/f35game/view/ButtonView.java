@@ -26,6 +26,10 @@ public class ButtonView implements IDrawable {
 		return mModel.getLeft();
 	}
 	
+	public float getPriority(){
+		return mSprite.getPriority();
+	}
+	
 	public float getWidth(){
 		return mModel.getWidth();
 	}
@@ -39,7 +43,10 @@ public class ButtonView implements IDrawable {
 		mSprite.moveTo(top, left);
 	}
 	
-
+	public void setPriority(float priority){
+		mSprite.setPriority(priority);
+	}
+	
 	@Override
 	public void draw(float[] mvpMatrix) {
 		mSprite.setTextureFrameIdx( mModel.isDown() ? 1 : 0 );

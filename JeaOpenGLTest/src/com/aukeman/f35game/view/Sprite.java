@@ -13,6 +13,8 @@ public class Sprite implements IDrawable{
 
 	private float mTop;
 	private float mLeft;
+	
+	private float mPriority;
 
 	private float mWidth;
 	private float mHeight;
@@ -33,6 +35,7 @@ public class Sprite implements IDrawable{
 		super();
 		this.mTop = 0.0f;
 		this.mLeft = 0.0f;
+		this.mPriority = 0.0f;
 		this.mWidth = width;
 		this.mHeight = height;
 		this.mTextureId = Shaders.loadTexture(context, textureId);
@@ -85,6 +88,8 @@ public class Sprite implements IDrawable{
 	
 	public float getLeft() { return this.mLeft; }
 	
+	public float getPriority() { return this.mPriority; }
+	
 	public float getWidth() { return this.mWidth; }
 	
 	public float getHeight() { return this.mHeight; }
@@ -92,7 +97,7 @@ public class Sprite implements IDrawable{
 	public void draw(float[] mvpMatrix){
 		
 //		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (float)Math.floor(mLeft), (float)Math.floor(mTop), 0);
-		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, mLeft, mTop, 0);
+		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, mLeft, mTop, mPriority);
 		
 		Shaders.render(6, mVertices, mTextureCoordinates[mTextureFrameIdx], mDrawOrder, mTextureId, mMVPMatrix);
 	}
@@ -100,6 +105,10 @@ public class Sprite implements IDrawable{
 	public void moveTo(float top, float left){
 		this.mTop = top;
 		this.mLeft = left;
+	}
+	
+	public void setPriority(float priority){
+		this.mPriority = priority;
 	}
 	
 	public void setTextureFrameIdx(int idx){

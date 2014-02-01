@@ -19,6 +19,8 @@ public class Background implements IDrawable {
 	
 	private float mLeft;
 	
+	private float mPriority;
+	
 	public Background( int tilesHigh, int tilesWide, IDrawable tiles[] ){
 		mTilesHigh = tilesHigh;
 		mTilesWide = tilesWide;
@@ -28,6 +30,7 @@ public class Background implements IDrawable {
 		
 		mTop = 0.0f;
 		mLeft = 0.0f;
+		mPriority = 0.0f;
 		
 		mTiles = tiles;
 
@@ -62,6 +65,10 @@ public class Background implements IDrawable {
 		return mLeft;
 	}
 	
+	public float getPriority(){
+		return mPriority;
+	}
+	
 	public float getWidth(){
 		return mTileWidthPixels*mTilesWide;
 	}
@@ -75,6 +82,10 @@ public class Background implements IDrawable {
 		mLeft = left;
 	}
 	
+	public void setPriority(float priority){
+		mPriority = priority;
+	}
+	
 	public void draw(float[] mvpMatrix){
 
 		for ( int colIdx = 0; colIdx < mTilesWide; ++colIdx ){
@@ -85,6 +96,7 @@ public class Background implements IDrawable {
 				if ( 0 <= tileIdx && tileIdx < this.mTiles.length ){
 
 					this.mTiles[tileIdx].moveTo(mTop+rowIdx*mTileHeightPixels, mLeft+colIdx*mTileWidthPixels); 
+					this.mTiles[tileIdx].setPriority(mPriority);
 					this.mTiles[tileIdx].draw(mvpMatrix);
 				}
 			}

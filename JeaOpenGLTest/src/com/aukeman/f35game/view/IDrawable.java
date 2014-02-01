@@ -12,5 +12,9 @@ public interface IDrawable {
 	
 	public float getHeight();
 	
+	public float getPriority();
+	
 	public void moveTo(float top, float left);
+	
+	public void setPriority(float priority);
 }

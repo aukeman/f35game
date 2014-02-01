@@ -26,6 +26,10 @@ public class JoystickView implements IDrawable{
 		return mModel.getLeft();
 	}
 	
+	public float getPriority(){
+		return mSprite.getPriority();
+	}
+	
 	public float getWidth(){
 		return mModel.getWidth();
 	}
@@ -36,6 +40,10 @@ public class JoystickView implements IDrawable{
 
 	public void moveTo(float top, float left){
 		mModel.moveTo(top, left);
+	}
+	
+	public void setPriority(float priority){
+		mSprite.setPriority(priority);
 	}
 	
 	public void draw(float[] mvpMatrix){
