@@ -141,9 +141,9 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		Log.i(VIEW_LOG_TAG, String.format("top: %f bottom: %f left: %f right: %f", mViewport.top, mViewport.bottom, mViewport.left, mViewport.right));
 		Log.i(VIEW_LOG_TAG, String.format("pixelHeightFactor: %d ratio: %f", pixelHeightFactor, ratio));
 		
-		Matrix.orthoM(mProjectionMatrix, 0, mViewport.left, mViewport.right, mViewport.bottom, mViewport.top, 3, 7);
+		Matrix.orthoM(mProjectionMatrix, 0, mViewport.left, mViewport.right, mViewport.bottom, mViewport.top, 1, 201);
 
-		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0);
+		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 101, 0, 0, 0, 0, 1, 0);
 		
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 

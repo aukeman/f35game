@@ -25,8 +25,6 @@ public class Sprite implements IDrawable{
 	
 	private ShortBuffer mDrawOrder;
 	
-	private float[] mColor;
-	
 	private int mTextureId;
 	
 	private int mTextureFrameIdx;
@@ -80,8 +78,6 @@ public class Sprite implements IDrawable{
 		mDrawOrder.put(new short[] { 0, 1, 2, 0, 2, 3 });
 		mDrawOrder.position(0);
 		  
-		mColor = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
-		
 		setTextureFrameIdx(0);
 	}
 	
@@ -98,7 +94,7 @@ public class Sprite implements IDrawable{
 //		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, (float)Math.floor(mLeft), (float)Math.floor(mTop), 0);
 		Matrix.translateM(mMVPMatrix, 0, mvpMatrix, 0, mLeft, mTop, 0);
 		
-		Shaders.render(6, mVertices, mTextureCoordinates[mTextureFrameIdx], mDrawOrder, mTextureId, mColor, mMVPMatrix);
+		Shaders.render(6, mVertices, mTextureCoordinates[mTextureFrameIdx], mDrawOrder, mTextureId, mMVPMatrix);
 	}
 	
 	public void moveTo(float top, float left){

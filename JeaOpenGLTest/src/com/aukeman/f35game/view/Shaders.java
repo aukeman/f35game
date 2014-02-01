@@ -51,6 +51,8 @@ public class Shaders {
 
 	private static int ourTextureHandle;
 	
+	private static int ourLastTextureId;
+	
 	static {
 		clearIdsAndHandles();
 	}
@@ -93,6 +95,7 @@ public class Shaders {
 		GLES20.glEnableVertexAttribArray(getPositionHandle());
 		GLES20.glEnableVertexAttribArray(getTextureCoordinatesHandle());
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+		GLES20.glUniform1i(getTextureHandle(), 0);
 
 
 	}
@@ -159,11 +162,13 @@ public class Shaders {
 		return ourTextureHandle;
 	}
 
-	
-	public static void render(int numberOfVertices, FloatBuffer vertices, FloatBuffer textureCoords, ShortBuffer drawOrder, int textureId, float[] color, float[] mvpMatrix){
+	public static void render(int numberOfVertices, FloatBuffer vertices, FloatBuffer textureCoords, ShortBuffer drawOrder, int textureId, float[] mvpMatrix){
 		
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
-		GLES20.glUniform1i(getTextureHandle(), 0);
+		if (textureId != ourLastTextureId )
+		{
+			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
+			ourLastTextureId = textureId;
+		}
 		
 		GLES20.glVertexAttribPointer(getPositionHandle(), 3, GLES20.GL_FLOAT, false, 0, vertices);
 		GLES20.glVertexAttribPointer(getTextureCoordinatesHandle(), 2, GLES20.GL_FLOAT, false, 0, textureCoords);
@@ -259,6 +264,8 @@ public class Shaders {
 		ourMVPMatrixHandle = -1;
 		ourTexCoordinateHandle = -1;
 		ourTextureHandle = -1;
+		
+		ourLastTextureId = -1;
 	}
 	
     private static void checkGlError(String op) {
