@@ -25,7 +25,6 @@ public class Shaders {
 	
 	public static final String ourFragmentShader = 
 		"precision mediump float;" +
-		"uniform vec4 uColor;" +
 		"varying vec2 vTexCoordinate;" +
 	    "uniform sampler2D uTexture; " +
 		"void main() {" +
@@ -35,7 +34,7 @@ public class Shaders {
 		"  if ( all(is_equal) ){" +
 		"    discard;" +
 		"  }" +
-		"  gl_FragColor = uColor * textureColor;" +
+		"  gl_FragColor = textureColor;" +
 		"}";
 	
 	private static int ourVertexShaderId;
@@ -47,8 +46,6 @@ public class Shaders {
 	private static int ourPositionHandle;
 	
 	private static int ourMVPMatrixHandle;
-	
-	private static int ourColorHandle;
 	
 	private static int ourTexCoordinateHandle;
 
@@ -82,9 +79,6 @@ public class Shaders {
 		getPositionHandle();
 		checkGlError("get position handle");
 		
-		getColorHandle();
-		checkGlError("get color handle");
-		
 		getMVPMatrixHandle();
 		checkGlError("get mvp matrix handle");
 		
@@ -93,6 +87,14 @@ public class Shaders {
 		
 		getTextureHandle();
 		checkGlError("get texture handle");
+		
+		GLES20.glUseProgram(getProgramId());
+		
+		GLES20.glEnableVertexAttribArray(getPositionHandle());
+		GLES20.glEnableVertexAttribArray(getTextureCoordinatesHandle());
+		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+
+
 	}
 	
 	public static int getVertexShaderId(){
@@ -141,14 +143,6 @@ public class Shaders {
 		return ourMVPMatrixHandle;
 	}
 	
-	public static int getColorHandle(){
-		if ( ourColorHandle < 0 ){
-			ourColorHandle = GLES20.glGetUniformLocation(getProgramId(), "uColor");
-		}
-		
-		return ourColorHandle;
-	}
-	
 	public static int getTextureCoordinatesHandle(){
 		if ( ourTexCoordinateHandle < 0 ){
 			ourTexCoordinateHandle = GLES20.glGetAttribLocation(getProgramId(), "aTexCoordinate");
@@ -168,27 +162,16 @@ public class Shaders {
 	
 	public static void render(int numberOfVertices, FloatBuffer vertices, FloatBuffer textureCoords, ShortBuffer drawOrder, int textureId, float[] color, float[] mvpMatrix){
 		
-		GLES20.glUseProgram(getProgramId());
-		
-		GLES20.glEnableVertexAttribArray(getPositionHandle());
-		GLES20.glEnableVertexAttribArray(getTextureCoordinatesHandle());
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
+		GLES20.glUniform1i(getTextureHandle(), 0);
 		
 		GLES20.glVertexAttribPointer(getPositionHandle(), 3, GLES20.GL_FLOAT, false, 0, vertices);
 		GLES20.glVertexAttribPointer(getTextureCoordinatesHandle(), 2, GLES20.GL_FLOAT, false, 0, textureCoords);
 		
-		GLES20.glUniform4fv(getColorHandle(), 1, color, 0);
-		
 		GLES20.glUniformMatrix4fv(getMVPMatrixHandle(), 1, false, mvpMatrix, 0);
 		
-		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
-		GLES20.glUniform1i(getTextureHandle(), 0);
-		
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, numberOfVertices, GLES20.GL_UNSIGNED_SHORT, drawOrder);
-//		GLES20.glDrawElements(GLES20.GL_LINES, numberOfVertices, GLES20.GL_UNSIGNED_SHORT, drawOrder);
 			
-		GLES20.glDisableVertexAttribArray(getPositionHandle());
-		GLES20.glDisableVertexAttribArray(getTextureCoordinatesHandle());
 	}
 	
 	public static int loadTexture(Context context, int resourceId){
@@ -241,6 +224,14 @@ public class Shaders {
 
 	private static void deleteProgramAndShaders(){
 
+		if ( 0 < ourPositionHandle ){
+			GLES20.glDisableVertexAttribArray(ourPositionHandle);
+		}
+		
+		if ( 0 < ourTexCoordinateHandle ){
+			GLES20.glDisableVertexAttribArray(ourTexCoordinateHandle);
+		}
+		
 		if ( 0 < ourVertexShaderId ){
 			GLES20.glDeleteShader(ourVertexShaderId);
 			GLES20.glDetachShader(ourProgramId, ourVertexShaderId);
@@ -266,7 +257,6 @@ public class Shaders {
 		ourProgramId = -1;
 		ourPositionHandle = -1;
 		ourMVPMatrixHandle = -1;
-		ourColorHandle = -1;
 		ourTexCoordinateHandle = -1;
 		ourTextureHandle = -1;
 	}

@@ -46,6 +46,14 @@ public class Background implements IDrawable {
 		mTileIndices[colIdx][rowIdx] = tileIdx;
 	}
 	
+	public int getTilesWide(){
+		return mTilesWide;
+	}
+	
+	public int getTilesHigh(){
+		return mTilesHigh;
+	}
+	
 	public float getTop(){ 
 		return mTop;
 	}

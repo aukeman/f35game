@@ -97,15 +97,13 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		 			 
 		 font = new Font(getContext());
 		 
-		 background = new Background(16, 16, new Sprite[] { sprite } );
-			
-		 for ( int i = 0; i < 16; ++i ){
-			 for ( int j = 0; j < 16; ++j ){
+		 background = new Background(16, 32, new Sprite[] { sprite } );
+
+		 for ( int i = 0; i < background.getTilesWide(); ++i ){
+			 for ( int j = 0; j < background.getTilesHigh(); ++j ){
 				 background.setTile(i, j, 0);
 			 }
 		 }
-		 
-		 background.setTile(0, 1, -1);
 		 
 		GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		Shaders.initialize();
