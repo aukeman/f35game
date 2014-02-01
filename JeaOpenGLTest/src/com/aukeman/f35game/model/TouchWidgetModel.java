@@ -1,7 +1,7 @@
 package com.aukeman.f35game.model;
 
 
-public class TouchWidgetModel {
+public class TouchWidgetModel implements IUpdatable{
 
 	private float mTop;
 	private float mLeft; 
@@ -16,6 +16,8 @@ public class TouchWidgetModel {
 	private float mCurrentY;
 	
 	private boolean mDown;
+	
+	private boolean mDownLastFrame;
 	
 	private int mPointerIndex;
 
@@ -52,6 +54,14 @@ public class TouchWidgetModel {
 		return mDown;
 	}
 	
+	public boolean pressed(){
+		return mDown && !mDownLastFrame;
+	}
+	
+	public boolean released(){
+		return !mDown && mDownLastFrame;
+	}
+	
 	public int getPointerIndex(){
 		return mPointerIndex;
 	}
@@ -62,6 +72,8 @@ public class TouchWidgetModel {
 		
 		mWidth = width;
 		mHeight = height;
+		
+		mDownLastFrame = false;
 		
 		reset();
 	}
@@ -123,6 +135,10 @@ public class TouchWidgetModel {
 				  pointerIndex < mPointerIndex ){
 			mPointerIndex -= 1;
 		}
+	}
+	
+	public void update(float frameLengthSeconds){
+		mDownLastFrame = mDown;
 	}
 	
 	private void reset(){

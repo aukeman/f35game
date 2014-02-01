@@ -102,6 +102,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		button = new ButtonView(getContext());
 		
 		ownship = new F35View(getContext());
+		
+		ownship.getModel().setControls(joystick.getModel(), button.getModel());
 		 			 
 		 font = new Font(getContext());
 		 
@@ -128,6 +130,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		mUpdatables.clear();
 		mUpdatables.add(ownship.getModel());
+		mUpdatables.add(joystick.getModel());
+		mUpdatables.add(button.getModel());
 		
 	}
 	
@@ -196,22 +200,6 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		float dx = joystick.getModel().getAxisX();
 		float dy = joystick.getModel().getAxisY();
 		
-		if ( dx < -0.25f ){
-			ownship.getModel().setDirection(F35Model.LEFT);
-		}
-		else if ( 0.25f < dx){
-			ownship.getModel().setDirection(F35Model.RIGHT);
-		}
-		else if ( dy < -0.25f ){
-			ownship.getModel().setDirection(F35Model.UP);			
-		}
-		else if ( 0.25f < dy ){
-			ownship.getModel().setDirection(F35Model.DOWN);
-		}
-		else{
-			ownship.getModel().setDirection(F35Model.STATIONARY);
-		}
-
 		float frameLengthSeconds = (now - lastFrameTime) / 1000.0f;
 		
 		for ( IUpdatable updatable : mUpdatables ){
