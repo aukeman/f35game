@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.aukeman.f35game.R;
+import com.aukeman.f35game.model.F35Model;
+import com.aukeman.f35game.model.IUpdatable;
 import com.aukeman.f35game.model.TouchWidgetModel;
 
 public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
@@ -52,6 +54,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	
 	private Background background;
 	
+	private F35View ownship;
+	
 	private int frameCount; 
 	private long timeLastFrameCountPosted;
 	private long lastFrameTime;
@@ -61,6 +65,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	
 	private List<TouchWidgetModel> mWidgets;
 	private List<IDrawable> mDrawables;
+	private List<IUpdatable> mUpdatables;
 	
 	public F35GameGLSurfaceView(Context context) {
 		super(context);
@@ -74,6 +79,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mViewport = new Viewport();
 		mWidgets = new LinkedList<TouchWidgetModel>();
 		mDrawables = new LinkedList<IDrawable>();
+		mUpdatables = new LinkedList<IUpdatable>();
 		
 	}
 
@@ -94,6 +100,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		sprite = new Sprite( getContext(), 16f, 16f, R.drawable.sprite, 2, 2 );
 		joystick = new JoystickView(getContext());
 		button = new ButtonView(getContext());
+		
+		ownship = new F35View(getContext());
 		 			 
 		 font = new Font(getContext());
 		 
@@ -112,10 +120,15 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mDrawables.add(background);
 		mDrawables.add(joystick);
 		mDrawables.add(button);
+		mDrawables.add(ownship);
 		
 		mWidgets.clear();
 		mWidgets.add(joystick.getModel());
 		mWidgets.add(button.getModel());
+		
+		mUpdatables.clear();
+		mUpdatables.add(ownship.getModel());
+		
 	}
 	
 	@Override
@@ -183,29 +196,27 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		float dx = joystick.getModel().getAxisX();
 		float dy = joystick.getModel().getAxisY();
 		
-		float pixelsPerSecond = 60.0f;
-		float frameLengthSeconds = (now - lastFrameTime) / 1000.0f;
-		
-		float distance = pixelsPerSecond * frameLengthSeconds;
-		
 		if ( dx < -0.25f ){
-			background.moveTo( background.getTop(), 
-							   background.getLeft()-distance );
+			ownship.getModel().setDirection(F35Model.LEFT);
 		}
 		else if ( 0.25f < dx){
-			background.moveTo( background.getTop(), 
-					   		   background.getLeft()+distance );
+			ownship.getModel().setDirection(F35Model.RIGHT);
 		}
-		
-		if ( dy < -0.25f ){
-			background.moveTo( background.getTop()-distance, 
-							   background.getLeft() );			
+		else if ( dy < -0.25f ){
+			ownship.getModel().setDirection(F35Model.UP);			
 		}
 		else if ( 0.25f < dy ){
-			background.moveTo( background.getTop()+distance, 
-			   		   		   background.getLeft() );
+			ownship.getModel().setDirection(F35Model.DOWN);
 		}
+		else{
+			ownship.getModel().setDirection(F35Model.STATIONARY);
+		}
+
+		float frameLengthSeconds = (now - lastFrameTime) / 1000.0f;
 		
+		for ( IUpdatable updatable : mUpdatables ){
+			updatable.update(frameLengthSeconds);
+		}
 		
 		lastFrameTime = now;
 		++frameCount;
