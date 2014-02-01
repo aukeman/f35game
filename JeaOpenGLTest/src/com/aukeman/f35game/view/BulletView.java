@@ -1,58 +1,28 @@
 package com.aukeman.f35game.view;
 
+import android.content.Context;
+
+import com.aukeman.f35game.R;
 import com.aukeman.f35game.model.BulletModel;
 
-public class BulletView implements IDrawable {
+public class BulletView extends AbstractView {
 
 	BulletModel mModel;
 
 	Sprite mSprite;
 	
+	public BulletView(Context context){
+		this.mModel = new BulletModel(16, 8);
+		this.mSprite = new Sprite(context, mModel.getWidth(), mModel.getHeight(), R.drawable.bullet, 1, 1);
+
+		setModel(this.mModel);
+		setDrawable(this.mSprite);
+	}
+	
 	@Override
 	public void draw(float[] mvpMatrix) {
-
+		if ( this.mModel.isActive() ){
+			this.mSprite.draw(mvpMatrix);
+		}
 	}
-
-	@Override
-	public float getTop() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getLeft() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getPriority() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void moveTo(float top, float left) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setPriority(float priority) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.aukeman.f35game.R;
 import com.aukeman.f35game.model.TouchWidgetModel;
 
-public class ButtonView implements IDrawable {
+public class ButtonView extends AbstractView{
 	
 	private Sprite mSprite;
 	
@@ -16,41 +16,17 @@ public class ButtonView implements IDrawable {
 		
 		mSprite = new Sprite(context, mModel.getWidth(), mModel.getHeight(), R.drawable.button, 2, 1);
 		mSprite.setTextureFrameIdx(0);
+		
+		setDrawable(mSprite);
+		setModel(mModel);
 	}
 	
-	public float getTop(){
-		return mModel.getTop();
-	}
-	
-	public float getLeft(){
-		return mModel.getLeft();
-	}
-	
-	public float getPriority(){
-		return mSprite.getPriority();
-	}
-	
-	public float getWidth(){
-		return mModel.getWidth();
-	}
-	
-	public float getHeight(){
-		return mModel.getHeight();
-	}
-	
-	public void moveTo( float top, float left ){
-		mModel.moveTo(top, left);
-		mSprite.moveTo(top, left);
-	}
-	
-	public void setPriority(float priority){
-		mSprite.setPriority(priority);
-	}
 	
 	@Override
 	public void draw(float[] mvpMatrix) {
 		mSprite.setTextureFrameIdx( mModel.isDown() ? 1 : 0 );
-		mSprite.draw(mvpMatrix);
+
+		super.draw(mvpMatrix);
 	}
 	
 	public TouchWidgetModel getModel(){

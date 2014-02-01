@@ -5,7 +5,7 @@ import android.content.Context;
 import com.aukeman.f35game.R;
 import com.aukeman.f35game.model.JoystickModel;
 
-public class JoystickView implements IDrawable{
+public class JoystickView extends AbstractView{
 
 	private Sprite mSprite;
 	
@@ -16,6 +16,9 @@ public class JoystickView implements IDrawable{
 
 		mSprite = new Sprite(context, mModel.getWidth(), mModel.getHeight(), R.drawable.joystick, 1, 1);
 		mSprite.moveTo(0, 0);
+		
+		setDrawable(mSprite);
+		setModel(mModel);
 	}
 	
 	public float getTop(){
