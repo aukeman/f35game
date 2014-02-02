@@ -9,11 +9,15 @@ public class F35Model extends AbstractModel {
 
 	public static final float MAXIMUM_SPEED_PPS = 60.0f;
 	
+	public static final float ROLL_RATE_DPS = 120.0f;
+	
 	private JoystickModel mJoystick;
 	
 	private TouchWidgetModel mButton;
 
 	private IViewport mViewport;
+	
+	private float mRollAngle;
 	
 	private List<BulletModel> mBullets;
 	
@@ -22,6 +26,8 @@ public class F35Model extends AbstractModel {
 		
 		this.mJoystick = null;
 		this.mButton = null;
+		
+		mRollAngle = 0.0f;
 		
 		this.mBullets = new LinkedList<BulletModel>();
 	}
@@ -36,6 +42,10 @@ public class F35Model extends AbstractModel {
 		this.mViewport = viewport;
 	}
 	
+	public float getRollAngle(){
+		return mRollAngle;
+	}
+	
 	public void addBullet(BulletModel bullet){
 		mBullets.add(bullet);
 	}
@@ -45,18 +55,38 @@ public class F35Model extends AbstractModel {
 		float left = this.getLeft();
 		float top = this.getTop();
 		
+		float distance = MAXIMUM_SPEED_PPS*frameLengthSeconds;
+		float roll = ROLL_RATE_DPS*frameLengthSeconds;
+		
 		if (mJoystick.getAxisX() < -0.25f){
-			left -= MAXIMUM_SPEED_PPS*frameLengthSeconds;
+			left -= distance;
+			
+			if ( -60.0f < mRollAngle){
+				mRollAngle -= roll;
+			}
 		}
 		else if (0.25f < mJoystick.getAxisX()){
-			left += MAXIMUM_SPEED_PPS*frameLengthSeconds;
+			left += distance;
+			
+			if ( mRollAngle < 60.0f ){
+				mRollAngle += roll;
+			}
+		}
+		else{
+			
+			if ( 0 < mRollAngle ){
+				mRollAngle -= roll;
+			}
+			else{
+				mRollAngle += roll;
+			}
 		}
 		
 		if ( mJoystick.getAxisY() < -0.25f ){
-			top -= MAXIMUM_SPEED_PPS*frameLengthSeconds;
+			top -= distance;
 		}
 		else if ( 0.25f < mJoystick.getAxisY()){
-			top += MAXIMUM_SPEED_PPS*frameLengthSeconds;
+			top += distance;
 		}
 
 		if ( top < mViewport.getTop() ){

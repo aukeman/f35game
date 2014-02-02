@@ -191,7 +191,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		sprite.setTextureFrameIdx( (int)seconds%4 );
 		
-		float frameLengthSeconds = (now - lastFrameTime) / 1000.0f;
+		float frameLengthSeconds = 0 < lastFrameTime ? (now - lastFrameTime) / 1000.0f : 0.0167f;
 		
 		for ( IUpdatable updatable : mUpdatables ){
 			updatable.update(frameLengthSeconds);

@@ -33,6 +33,28 @@ public class F35View extends AbstractView{
 		return mModel;
 	}
 	
+	@Override
+	public void draw(float[] mvpMatrix) {
+
+		if ( mModel.getRollAngle() < -30.0f ){
+			mSprite.setTextureFrameIdx(0);
+		}
+		else if ( mModel.getRollAngle() < -10.0f ){
+			mSprite.setTextureFrameIdx(1);
+		}
+		else if ( mModel.getRollAngle() < 10.0f ){
+			mSprite.setTextureFrameIdx(2);
+		}
+		else if ( mModel.getRollAngle() < 30.0f ){
+			mSprite.setTextureFrameIdx(3);
+		}
+		else{
+			mSprite.setTextureFrameIdx(4);
+		}
+		
+		super.draw(mvpMatrix);
+	}
+	
 	public void addBullet(BulletView bullet){
 		mBullets.add(bullet);
 		
