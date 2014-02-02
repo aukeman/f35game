@@ -1,5 +1,7 @@
 package com.aukeman.f35game.view;
 
+import com.aukeman.f35game.view.interfaces.IViewport;
+
 public class Viewport implements IViewport{
 	private float top = 0.0f;
 	private float bottom = 0.0f;

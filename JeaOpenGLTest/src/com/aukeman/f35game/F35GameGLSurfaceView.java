@@ -1,4 +1,4 @@
-package com.aukeman.f35game.view;
+package com.aukeman.f35game;
 
 
 import java.util.LinkedList;
@@ -15,8 +15,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.aukeman.f35game.R;
-import com.aukeman.f35game.model.IUpdatable;
 import com.aukeman.f35game.model.TouchWidgetModel;
+import com.aukeman.f35game.model.interfaces.IUpdatable;
+import com.aukeman.f35game.opengl.Shaders;
+import com.aukeman.f35game.view.Background;
+import com.aukeman.f35game.view.BulletView;
+import com.aukeman.f35game.view.ButtonView;
+import com.aukeman.f35game.view.F35View;
+import com.aukeman.f35game.view.Font;
+import com.aukeman.f35game.view.JoystickView;
+import com.aukeman.f35game.view.Sprite;
+import com.aukeman.f35game.view.Viewport;
+import com.aukeman.f35game.view.interfaces.IDrawable;
 
 public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
 

@@ -1,5 +1,7 @@
 package com.aukeman.f35game.model;
 
+import com.aukeman.f35game.model.interfaces.IUpdatable;
+
 public abstract class AbstractModel implements IUpdatable {
 
 	private float mTop;

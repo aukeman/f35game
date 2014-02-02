@@ -1,6 +1,6 @@
 package com.aukeman.f35game.model;
 
-import com.aukeman.f35game.view.IViewport;
+import com.aukeman.f35game.view.interfaces.IViewport;
 
 public class BulletModel extends AbstractModel {
 

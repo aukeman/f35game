@@ -1,6 +1,7 @@
 package com.aukeman.f35game.view;
 
 import com.aukeman.f35game.model.AbstractModel;
+import com.aukeman.f35game.view.interfaces.IDrawable;
 
 public class AbstractView implements IDrawable {
 

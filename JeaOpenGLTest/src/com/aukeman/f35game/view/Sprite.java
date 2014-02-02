@@ -5,6 +5,9 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import com.aukeman.f35game.opengl.Shaders;
+import com.aukeman.f35game.view.interfaces.IDrawable;
+
 
 import android.content.Context;
 import android.opengl.Matrix;

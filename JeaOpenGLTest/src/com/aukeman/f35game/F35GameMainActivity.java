@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
-import com.aukeman.f35game.view.F35GameGLSurfaceView;
 
 public class F35GameMainActivity extends Activity {
 

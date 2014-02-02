@@ -1,4 +1,4 @@
-package com.aukeman.f35game.model;
+package com.aukeman.f35game.model.interfaces;
 
 public interface IUpdatable {
 

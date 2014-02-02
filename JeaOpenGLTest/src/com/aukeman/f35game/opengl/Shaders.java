@@ -1,4 +1,4 @@
-package com.aukeman.f35game.view;
+package com.aukeman.f35game.opengl;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;

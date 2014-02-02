@@ -3,7 +3,7 @@ package com.aukeman.f35game.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.aukeman.f35game.view.IViewport;
+import com.aukeman.f35game.view.interfaces.IViewport;
 
 public class F35Model extends AbstractModel {
 

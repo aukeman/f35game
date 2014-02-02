@@ -1,4 +1,4 @@
-package com.aukeman.f35game.view;
+package com.aukeman.f35game.view.interfaces;
 
 public interface IViewport {
 
