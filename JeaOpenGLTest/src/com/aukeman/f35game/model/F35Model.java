@@ -63,10 +63,6 @@ public class F35Model extends AbstractModel {
 				}
 			}
 		}
-		
-		for ( BulletModel bullet : mBullets ){
-			bullet.update(frameLengthSeconds);
-		}
 	}
 	
 }

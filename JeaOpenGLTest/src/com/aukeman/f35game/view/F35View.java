@@ -33,17 +33,6 @@ public class F35View extends AbstractView{
 		return mModel;
 	}
 	
-	@Override
-	public void draw(float[] mvpMatrix) {
-		super.draw(mvpMatrix);
-		
-		for ( BulletView bullet : mBullets ){
-			if ( bullet.getModel().isActive() ){
-				bullet.draw(mvpMatrix);
-			}
-		}
-	}
-	
 	public void addBullet(BulletView bullet){
 		mBullets.add(bullet);
 		

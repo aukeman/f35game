@@ -67,6 +67,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	private List<IDrawable> mDrawables;
 	private List<IUpdatable> mUpdatables;
 	
+	private List<BulletView> bullets;
+	
 	public F35GameGLSurfaceView(Context context) {
 		super(context);
 		
@@ -80,6 +82,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mWidgets = new LinkedList<TouchWidgetModel>();
 		mDrawables = new LinkedList<IDrawable>();
 		mUpdatables = new LinkedList<IUpdatable>();
+		
+		bullets = new LinkedList<BulletView>();
 		
 	}
 
@@ -102,13 +106,13 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		button = new ButtonView(getContext());
 		
 		ownship = new F35View(getContext());
-		
 		ownship.getModel().setControls(joystick.getModel(), button.getModel());
 		 		
-		ownship.addBullet(new BulletView(getContext()));
-		ownship.addBullet(new BulletView(getContext()));
-		
-		
+		bullets.clear();
+		bullets.add(new BulletView(getContext()));
+		bullets.add(new BulletView(getContext()));
+		bullets.add(new BulletView(getContext()));
+
 		 font = new Font(getContext());
 		 
 		 background = new Background(16, 32, new Sprite[] { sprite } );
@@ -137,6 +141,11 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mUpdatables.add(joystick.getModel());
 		mUpdatables.add(button.getModel());
 		
+		for ( BulletView bullet : bullets ){
+			ownship.getModel().addBullet(bullet.getModel());
+			mUpdatables.add(bullet.getModel());
+			mDrawables.add(bullet);
+		}
 	}
 	
 	@Override
