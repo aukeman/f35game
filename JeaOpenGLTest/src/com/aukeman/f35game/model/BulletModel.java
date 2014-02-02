@@ -2,7 +2,7 @@ package com.aukeman.f35game.model;
 
 public class BulletModel extends AbstractModel {
 
-	public static final float MAXIMUM_SPEED_PPS = 120.0f;
+	public static final float MAXIMUM_SPEED_PPS = 240.0f;
 	
 	private boolean mActive;
 	
@@ -14,6 +14,10 @@ public class BulletModel extends AbstractModel {
 	
 	public boolean isActive(){
 		return mActive;
+	}
+	
+	public void activate(){
+		mActive = true;
 	}
 	
 	@Override

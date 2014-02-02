@@ -104,7 +104,11 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		ownship = new F35View(getContext());
 		
 		ownship.getModel().setControls(joystick.getModel(), button.getModel());
-		 			 
+		 		
+		ownship.addBullet(new BulletView(getContext()));
+		ownship.addBullet(new BulletView(getContext()));
+		
+		
 		 font = new Font(getContext());
 		 
 		 background = new Background(16, 32, new Sprite[] { sprite } );
@@ -119,7 +123,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		Shaders.initialize();
 		
 		mDrawables.clear();
-		mDrawables.add(background);
+//		mDrawables.add(background);
 		mDrawables.add(joystick);
 		mDrawables.add(button);
 		mDrawables.add(ownship);

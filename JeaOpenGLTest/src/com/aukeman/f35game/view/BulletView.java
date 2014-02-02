@@ -12,7 +12,7 @@ public class BulletView extends AbstractView {
 	Sprite mSprite;
 	
 	public BulletView(Context context){
-		this.mModel = new BulletModel(16, 8);
+		this.mModel = new BulletModel(8, 2);
 		this.mSprite = new Sprite(context, mModel.getWidth(), mModel.getHeight(), R.drawable.bullet, 1, 1);
 
 		setModel(this.mModel);
@@ -22,7 +22,11 @@ public class BulletView extends AbstractView {
 	@Override
 	public void draw(float[] mvpMatrix) {
 		if ( this.mModel.isActive() ){
-			this.mSprite.draw(mvpMatrix);
+			super.draw(mvpMatrix);
 		}
+	}
+	
+	public BulletModel getModel(){
+		return mModel;
 	}
 }
