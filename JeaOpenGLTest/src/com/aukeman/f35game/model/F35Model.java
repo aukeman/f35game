@@ -3,6 +3,8 @@ package com.aukeman.f35game.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.aukeman.f35game.view.IViewport;
+
 public class F35Model extends AbstractModel {
 
 	public static final float MAXIMUM_SPEED_PPS = 60.0f;
@@ -10,6 +12,8 @@ public class F35Model extends AbstractModel {
 	private JoystickModel mJoystick;
 	
 	private TouchWidgetModel mButton;
+
+	private IViewport mViewport;
 	
 	private List<BulletModel> mBullets;
 	
@@ -26,6 +30,10 @@ public class F35Model extends AbstractModel {
 							TouchWidgetModel button ){
 		this.mJoystick = joystick;
 		this.mButton = button;
+	}
+	
+	public void setViewport(IViewport viewport){
+		this.mViewport = viewport;
 	}
 	
 	public void addBullet(BulletModel bullet){
@@ -49,6 +57,20 @@ public class F35Model extends AbstractModel {
 		}
 		else if ( 0.25f < mJoystick.getAxisY()){
 			top += MAXIMUM_SPEED_PPS*frameLengthSeconds;
+		}
+
+		if ( top < mViewport.getTop() ){
+			top = mViewport.getTop();
+		}
+		else if ( mViewport.getBottom() < top + getHeight() ){
+			top = mViewport.getBottom() - getHeight();
+		}
+		
+		if ( left < mViewport.getLeft() ){
+			left = mViewport.getLeft();
+		}
+		else if ( mViewport.getRight() < left + getWidth() ){
+			left = mViewport.getRight() - getWidth();
 		}
 		
 		this.moveTo(top, left);

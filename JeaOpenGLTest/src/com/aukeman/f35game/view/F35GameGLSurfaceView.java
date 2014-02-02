@@ -15,30 +15,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.aukeman.f35game.R;
-import com.aukeman.f35game.model.F35Model;
 import com.aukeman.f35game.model.IUpdatable;
 import com.aukeman.f35game.model.TouchWidgetModel;
 
 public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
-	private class Viewport{
-		public float top = 0.0f;
-		public float bottom = 0.0f;
-		public float left = 0.0f;
-		public float right = 0.0f;
-		
-		public float screenWidth = 0.0f;
-		public float screenHeight = 0.0f;
-	
-		public float getXFromScreenX(float screenX){
-			return screenX * (this.right - this.left) / this.screenWidth + this.left;
-		}
-
-		public float getYFromScreenY(float screenY){
-			return screenY * (this.bottom - this.top) / this.screenHeight + this.top;
-		}
-	}
-	
 	private static final String VIEW_LOG_TAG = F35GameGLSurfaceView.class.getName();
 	
 	private final float[] mMVPMatrix = new float[16];
@@ -78,7 +59,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 		
-		mViewport = new Viewport();
+		mViewport = null;
 		mWidgets = new LinkedList<TouchWidgetModel>();
 		mDrawables = new LinkedList<IDrawable>();
 		mUpdatables = new LinkedList<IUpdatable>();
@@ -100,14 +81,16 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
-
+		mViewport = new Viewport();
+		
 		sprite = new Sprite( getContext(), 16f, 16f, R.drawable.sprite, 2, 2 );
 		joystick = new JoystickView(getContext());
 		button = new ButtonView(getContext());
 		
 		ownship = new F35View(getContext());
 		ownship.getModel().setControls(joystick.getModel(), button.getModel());
-		 		
+		ownship.getModel().setViewport(mViewport); 		
+		
 		bullets.clear();
 		bullets.add(new BulletView(getContext()));
 		bullets.add(new BulletView(getContext()));
@@ -143,47 +126,52 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		for ( BulletView bullet : bullets ){
 			ownship.getModel().addBullet(bullet.getModel());
+			bullet.getModel().setViewport(mViewport);
 			mUpdatables.add(bullet.getModel());
 			mDrawables.add(bullet);
 		}
 	}
 	
 	@Override
-	public void onSurfaceChanged(GL10 arg0, int width, int height) {
-		GLES20.glViewport(0, 0, width, height);
+	public void onSurfaceChanged(GL10 arg0, int screenWidth, int screenHeight) {
+		GLES20.glViewport(0, 0, screenWidth, screenHeight);
 		
 		int numberOfLines = 256;
 		
-		int pixelHeightFactor = height/numberOfLines;
+		int pixelHeightFactor = screenHeight/numberOfLines;
 		
-		float ratio = (float)width / height;
+		float ratio = (float)screenWidth / screenHeight;
 		
-		mViewport.top = 0.0f;
-		mViewport.left = 0.0f;
+		float top = 0.0f;
+		float left = 0.0f;
 		
-		mViewport.bottom = (float)height/pixelHeightFactor + mViewport.top;
-		mViewport.right = (float)ratio*(mViewport.bottom - mViewport.top) + mViewport.left; 
+		float bottom = (float)screenHeight/pixelHeightFactor + top;
+		float right = (float)ratio*(bottom - top) + left; 
 
-		mViewport.screenWidth = width;
-		mViewport.screenHeight = height;
+		mViewport.setTop(top);
+		mViewport.setBottom(bottom);
+		mViewport.setLeft(left);
+		mViewport.setRight(right);
+		mViewport.setScreenWidth(screenWidth);
+		mViewport.setScreenHeight(screenHeight);
 		
-		Log.i(VIEW_LOG_TAG, String.format("width: %d height: %d", width, height));
-		Log.i(VIEW_LOG_TAG, String.format("top: %f bottom: %f left: %f right: %f", mViewport.top, mViewport.bottom, mViewport.left, mViewport.right));
+		Log.i(VIEW_LOG_TAG, String.format("width: %d height: %d", screenWidth, screenHeight));
+		Log.i(VIEW_LOG_TAG, String.format("top: %f bottom: %f left: %f right: %f", mViewport.getTop(), mViewport.getBottom(), mViewport.getLeft(), mViewport.getRight()));
 		Log.i(VIEW_LOG_TAG, String.format("pixelHeightFactor: %d ratio: %f", pixelHeightFactor, ratio));
 		
-		Matrix.orthoM(mProjectionMatrix, 0, mViewport.left, mViewport.right, mViewport.bottom, mViewport.top, 1, 201);
+		Matrix.orthoM(mProjectionMatrix, 0, mViewport.getLeft(), mViewport.getRight(), mViewport.getBottom(), mViewport.getTop(), 1, 201);
 
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 101, 0, 0, 0, 0, 1, 0);
 		
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-		joystick.moveTo( mViewport.bottom - 1.5f*joystick.getHeight(), 
-				         mViewport.left + 0.5f*joystick.getWidth() );
+		joystick.moveTo( mViewport.getBottom() - 1.5f*joystick.getHeight(), 
+				         mViewport.getLeft() + 0.5f*joystick.getWidth() );
 		
 		background.setPriority(-1.0f);
 		
-		button.moveTo( mViewport.bottom - 1.5f*button.getHeight(), 
-					   mViewport.right - 1.5f*button.getWidth() );
+		button.moveTo( mViewport.getBottom() - 1.5f*button.getHeight(), 
+					   mViewport.getRight() - 1.5f*button.getWidth() );
 	}
 	
 	@Override
@@ -198,20 +186,10 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		}
 		
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-		
 	
 		long seconds = now/1000;
 		
 		sprite.setTextureFrameIdx( (int)seconds%4 );
-		
-		for (IDrawable d : mDrawables){
-			d.draw(mMVPMatrix);
-		}
-		
-		font.drawString(mMVPMatrix, mViewport.top+5, mViewport.left+5, frameRateMessage);
-		
-		float dx = joystick.getModel().getAxisX();
-		float dy = joystick.getModel().getAxisY();
 		
 		float frameLengthSeconds = (now - lastFrameTime) / 1000.0f;
 		
@@ -219,9 +197,14 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 			updatable.update(frameLengthSeconds);
 		}
 		
+		for (IDrawable d : mDrawables){
+			d.draw(mMVPMatrix);
+		}
+		
+		font.drawString(mMVPMatrix, mViewport.getTop()+5, mViewport.getLeft()+5, frameRateMessage);
+		
 		lastFrameTime = now;
 		++frameCount;
-		
 	}
 
 	@Override
