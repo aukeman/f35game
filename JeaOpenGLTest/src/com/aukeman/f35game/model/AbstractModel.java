@@ -1,5 +1,6 @@
 package com.aukeman.f35game.model;
 
+import com.aukeman.f35game.IFrameInfo;
 import com.aukeman.f35game.model.interfaces.IUpdatable;
 
 public abstract class AbstractModel implements IUpdatable {
@@ -42,7 +43,7 @@ public abstract class AbstractModel implements IUpdatable {
 	}
 	
 	@Override
-	public void update(float frameLengthSeconds) {
+	public void update(IFrameInfo frameInfo) {
 		/* no-op */
 	}
 

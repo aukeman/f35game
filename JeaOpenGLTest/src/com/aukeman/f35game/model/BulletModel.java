@@ -1,5 +1,6 @@
 package com.aukeman.f35game.model;
 
+import com.aukeman.f35game.IFrameInfo;
 import com.aukeman.f35game.view.interfaces.IViewport;
 
 public class BulletModel extends AbstractModel {
@@ -29,10 +30,10 @@ public class BulletModel extends AbstractModel {
 	}
 	
 	@Override
-	public void update(float frameLengthSeconds) {
+	public void update(IFrameInfo frameInfo) {
 
 		if (mActive){
-			this.moveTo(getTop() - frameLengthSeconds*MAXIMUM_SPEED_PPS , getLeft());
+			this.moveTo(getTop() - frameInfo.getLengthOfLastFrameInSeconds()*MAXIMUM_SPEED_PPS , getLeft());
 
 			if ( this.getTop() < mViewport.getTop() - this.getHeight() ){
 				mActive = false;

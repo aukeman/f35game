@@ -1,5 +1,7 @@
 package com.aukeman.f35game.model;
 
+import com.aukeman.f35game.IFrameInfo;
+
 
 public class TouchWidgetModel extends AbstractModel{
 
@@ -108,7 +110,7 @@ public class TouchWidgetModel extends AbstractModel{
 		}
 	}
 	
-	public void update(float frameLengthSeconds){
+	public void update(IFrameInfo frameInfo){
 		mDownLastFrame = mDown;
 	}
 	

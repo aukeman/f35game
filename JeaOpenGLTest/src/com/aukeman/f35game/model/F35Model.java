@@ -3,6 +3,7 @@ package com.aukeman.f35game.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.aukeman.f35game.IFrameInfo;
 import com.aukeman.f35game.view.interfaces.IViewport;
 
 public class F35Model extends AbstractModel {
@@ -50,13 +51,13 @@ public class F35Model extends AbstractModel {
 		mBullets.add(bullet);
 	}
 	
-	public void update(float frameLengthSeconds){
+	public void update(IFrameInfo frameInfo){
 		
 		float left = this.getLeft();
 		float top = this.getTop();
 		
-		float distance = MAXIMUM_SPEED_PPS*frameLengthSeconds;
-		float roll = ROLL_RATE_DPS*frameLengthSeconds;
+		float distance = MAXIMUM_SPEED_PPS*frameInfo.getLengthOfLastFrameInSeconds();
+		float roll = ROLL_RATE_DPS*frameInfo.getLengthOfLastFrameInSeconds();
 		
 		if (mJoystick.getAxisX() < -0.25f){
 			left -= distance;

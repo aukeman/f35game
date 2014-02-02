@@ -47,11 +47,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	
 	private F35View ownship;
 	
-	private int frameCount; 
-	private long timeLastFrameCountPosted;
-	private long lastFrameTime;
-	private String frameRateMessage = "";
-
+	private FrameInfo mFrameInfo;
+	
 	private Viewport mViewport;
 	
 	private List<TouchWidgetModel> mWidgets;
@@ -75,6 +72,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mUpdatables = new LinkedList<IUpdatable>();
 		
 		bullets = new LinkedList<BulletView>();
+		
+		mFrameInfo = new FrameInfo(true);
 		
 	}
 
@@ -187,34 +186,20 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	@Override
 	public void onDrawFrame(GL10 arg0) {
 
-		long now = System.currentTimeMillis();
-		
-		if ( now % 1000 < lastFrameTime % 1000 ){
-			frameRateMessage = String.format("FPS: %.1f", (double)frameCount / (now - timeLastFrameCountPosted ) * 1000 );
-			timeLastFrameCountPosted = now;
-			frameCount = 0;
-		}
+		mFrameInfo.topOfFrame();
 		
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 	
-		long seconds = now/1000;
-		
-		sprite.setTextureFrameIdx( (int)seconds%4 );
-		
-		float frameLengthSeconds = 0 < lastFrameTime ? (now - lastFrameTime) / 1000.0f : 0.0167f;
-		
 		for ( IUpdatable updatable : mUpdatables ){
-			updatable.update(frameLengthSeconds);
+			updatable.update(mFrameInfo);
 		}
 		
 		for (IDrawable d : mDrawables){
 			d.draw(mMVPMatrix);
 		}
 		
-		font.drawString(mMVPMatrix, mViewport.getTop()+5, mViewport.getLeft()+5, frameRateMessage);
+		font.drawString(mMVPMatrix, mViewport.getTop()+5, mViewport.getLeft()+5, mFrameInfo.getFrameRateString());
 		
-		lastFrameTime = now;
-		++frameCount;
 	}
 
 	@Override
