@@ -4,17 +4,18 @@ import com.aukeman.f35game.IFrameInfo;
 
 public interface IPath {
 
-	public float getX(IFrameInfo frameInfo);
+	public float getLeft(long startTime, IFrameInfo frameInfo);
 	
-	public float getY(IFrameInfo frameInfo);
+	public float getTop(long startTime, IFrameInfo frameInfo);
 	
-	public float getHeading(IFrameInfo frameInfo);
+	public float getHeading(long startTime, IFrameInfo frameInfo);
 	
-	public float getPitch(IFrameInfo frameInfo);
+	public float getPitch(long startTime, IFrameInfo frameInfo);
 	
-	public float getRoll(IFrameInfo frameInfo);
+	public float getRoll(long startTime, IFrameInfo frameInfo);
 	
-	public boolean getShot(IFrameInfo frameInfo); 
+	public boolean getShot(long startTime, IFrameInfo frameInfo); 
 	
+	public boolean isComplete(long startTime, IFrameInfo frameInfo);
 	
 }

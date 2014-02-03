@@ -37,6 +37,14 @@ public abstract class AbstractModel implements IUpdatable {
 		return mHeight;
 	}
 	
+	public void setWidth(float width){
+		mWidth = width;
+	}
+	
+	public void setHeight(float height){
+		mHeight = height;
+	}
+	
 	public void moveTo(float top, float left){
 		this.mTop = top;
 		this.mLeft = left;
