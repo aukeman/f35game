@@ -13,6 +13,10 @@ public class BadguyModel extends AbstractModel {
 	
 	private long mStartTime;
 	
+	private float mStartTop;
+	
+	private float mStartLeft;
+	
 	private IPath mPath;
 	
 	public BadguyModel(){
@@ -23,6 +27,10 @@ public class BadguyModel extends AbstractModel {
 		mRoll = 0.0f;
 		
 		mStartTime = 0;
+		mStartTop = 0.0f;
+		mStartLeft = 0.0f;
+		
+		mPath = null;
 	}
 	
 	public float getHeading(){
@@ -37,8 +45,10 @@ public class BadguyModel extends AbstractModel {
 		return mRoll;
 	}
 	
-	public void activate(IFrameInfo frameInfo, IPath path){
+	public void activate(IFrameInfo frameInfo, float startTop, float startLeft, IPath path){
 		mStartTime = frameInfo.getTopOfFrame();
+		mStartTop = startTop;
+		mStartLeft = startLeft;
 		mPath = path;
 	}
 	
@@ -50,17 +60,19 @@ public class BadguyModel extends AbstractModel {
 	public void update(IFrameInfo frameInfo) {
 
 		if ( isActive() ){
-			float top = mPath.getTop(mStartTime, frameInfo);
-			float left = mPath.getLeft(mStartTime, frameInfo);
+			float top = mPath.getTop(mStartTime, mStartLeft, mStartTop, frameInfo);
+			float left = mPath.getLeft(mStartTime, mStartLeft, mStartTop, frameInfo);
 			
 			moveTo(top, left);
 			
-			mHeading = mPath.getHeading(mStartTime, frameInfo);
-			mPitch = mPath.getPitch(mStartTime, frameInfo);
-			mRoll = mPath.getRoll(mStartTime, frameInfo);
+			mHeading = mPath.getHeading(mStartTime, mStartLeft, mStartTop, frameInfo);
+			mPitch = mPath.getPitch(mStartTime, mStartLeft, mStartTop, frameInfo);
+			mRoll = mPath.getRoll(mStartTime, mStartLeft, mStartTop, frameInfo);
 			
-			if ( mPath.isComplete(mStartTime, frameInfo) ){
+			if ( mPath.isComplete(mStartTime, mStartLeft, mStartTop, frameInfo) ){
 				mStartTime = 0;
+				mStartTop = 0.0f;
+				mStartLeft = 0.0f;
 				mPath = null;
 			}
 		}

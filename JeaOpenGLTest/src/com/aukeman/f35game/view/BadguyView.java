@@ -22,13 +22,13 @@ public class BadguyView extends AbstractView {
 		return this.mModel.isActive();
 	}
 	
-	public void activate(IFrameInfo frameInfo, Sprite sprite, IPath path){
+	public void activate(IFrameInfo frameInfo, Sprite sprite, float startTop, float startLeft, IPath path){
 		this.mSprite = sprite;
 		
 		this.mModel.setWidth(mSprite.getWidth());
 		this.mModel.setHeight(mModel.getHeight());
 		
-		this.mModel.activate(frameInfo, path);
+		this.mModel.activate(frameInfo, startTop, startLeft, path);
 	}
 	
 	@Override
