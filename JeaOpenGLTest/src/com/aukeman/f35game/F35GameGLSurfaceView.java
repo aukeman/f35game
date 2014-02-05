@@ -3,6 +3,7 @@ package com.aukeman.f35game;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -15,10 +16,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.aukeman.f35game.R;
+import com.aukeman.f35game.model.BadguyFactory;
 import com.aukeman.f35game.model.TouchWidgetModel;
 import com.aukeman.f35game.model.interfaces.IUpdatable;
 import com.aukeman.f35game.opengl.Shaders;
 import com.aukeman.f35game.view.Background;
+import com.aukeman.f35game.view.BadguyView;
 import com.aukeman.f35game.view.BulletView;
 import com.aukeman.f35game.view.ButtonView;
 import com.aukeman.f35game.view.F35View;
@@ -57,6 +60,10 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	
 	private List<BulletView> bullets;
 	
+	private List<BadguyView> badguys;
+	
+	private BadguyFactory badguyFactory;
+	
 	public F35GameGLSurfaceView(Context context) {
 		super(context);
 		
@@ -72,6 +79,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mUpdatables = new LinkedList<IUpdatable>();
 		
 		bullets = new LinkedList<BulletView>();
+		
+		badguys = new LinkedList<BadguyView>();
 		
 		mFrameInfo = new FrameInfo(true);
 		
@@ -104,7 +113,20 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		bullets.add(new BulletView(getContext()));
 		bullets.add(new BulletView(getContext()));
 		bullets.add(new BulletView(getContext()));
+		
+		badguys.add(new BadguyView());
+		badguys.add(new BadguyView());
 
+		Queue<Long> badguyTimes = new LinkedList<Long>();
+		badguyTimes.add(5000L);
+		badguyTimes.add(10000L);
+		badguyTimes.add(15000L);
+		badguyTimes.add(20000L);
+		badguyTimes.add(25000L);
+		badguyTimes.add(30000L);
+		
+		badguyFactory = new BadguyFactory(getContext(), badguys, badguyTimes);
+		
 		 font = new Font(getContext());
 		 
 		 background = new Background(16, 32, new Sprite[] { sprite } );
@@ -132,6 +154,12 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mUpdatables.add(ownship.getModel());
 		mUpdatables.add(joystick.getModel());
 		mUpdatables.add(button.getModel());
+		mUpdatables.add(badguyFactory);
+
+		for ( BadguyView badguy : badguys ){
+			mUpdatables.add(badguy.getModel());
+			mDrawables.add(badguy);
+		}
 		
 		for ( BulletView bullet : bullets ){
 			ownship.getModel().addBullet(bullet.getModel());

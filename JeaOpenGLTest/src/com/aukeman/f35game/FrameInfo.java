@@ -2,6 +2,8 @@ package com.aukeman.f35game;
 
 public class FrameInfo implements IFrameInfo {
 	
+	private long mStartTime;
+	
 	private long mTopOfFrame;
 	
 	private long mTopOfLastFrame;
@@ -51,6 +53,7 @@ public class FrameInfo implements IFrameInfo {
 	}
 	
 	public FrameInfo(boolean calculateFrameRate){
+		mStartTime = 0;
 		mTopOfFrame = 0;
 		mTopOfLastFrame = 0;
 		mTimeLastFrameRateCalculated = 0;
@@ -65,8 +68,13 @@ public class FrameInfo implements IFrameInfo {
 	}
 	
 	public void topOfFrame(){
+		
+		if ( mStartTime == 0 ){
+			mStartTime = System.currentTimeMillis();
+		}
+		
 		mTopOfLastFrame = mTopOfFrame;
-		mTopOfFrame = System.currentTimeMillis();
+		mTopOfFrame = System.currentTimeMillis() - mStartTime;
 
 		if ( mCalculateFrameRate && mTopOfFrame % 1000 < mTopOfLastFrame % 1000 ){
 			mFrameRate = (float)(mFrameCount - mFrameCountLastFrameRateCalculated ) / (mTopOfFrame - mTimeLastFrameRateCalculated ) * 1000 ;

@@ -7,7 +7,7 @@ import com.aukeman.f35game.IFrameInfo;
 import com.aukeman.f35game.model.interfaces.IPath;
 import com.aukeman.f35game.model.interfaces.IPathSegment;
 
-public abstract class CompositePath implements IPath{
+public class CompositePath implements IPath{
 
 	private List<IPathSegment> mSegments;
 	
@@ -30,7 +30,7 @@ public abstract class CompositePath implements IPath{
 	}
 
 	
-	protected void addSegment(IPathSegment segment){
+	public void addSegment(IPathSegment segment){
 		mSegments.add(segment);
 	}
 	
