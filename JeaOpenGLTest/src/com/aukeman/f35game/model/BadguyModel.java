@@ -60,8 +60,8 @@ public class BadguyModel extends AbstractModel {
 	public void update(IFrameInfo frameInfo) {
 
 		if ( isActive() ){
-			float top = mPath.getTop(mStartTime, mStartLeft, mStartTop, frameInfo);
-			float left = mPath.getLeft(mStartTime, mStartLeft, mStartTop, frameInfo);
+			float top = mPath.getY(mStartTime, mStartLeft, mStartTop, frameInfo);
+			float left = mPath.getX(mStartTime, mStartLeft, mStartTop, frameInfo);
 			
 			moveTo(top, left);
 			

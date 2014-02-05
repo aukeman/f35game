@@ -33,7 +33,7 @@ public class StraightSegment implements IPathSegment{
 	}
 	
 	@Override
-	public float getLeft(long startTime, 
+	public float getX(long startTime, 
 			             float startX, 
 			             float startY,
 			             IFrameInfo frameInfo) {
@@ -49,8 +49,10 @@ public class StraightSegment implements IPathSegment{
 	}
 
 	@Override
-	public float getTop(long startTime, float startX, float startY,
-			IFrameInfo frameInfo) {
+	public float getY(long startTime, 
+			           float startX, 
+			           float startY,
+			           IFrameInfo frameInfo) {
 
 		float percentComplete = getPercentComplete(startTime, frameInfo);
 		
@@ -82,7 +84,7 @@ public class StraightSegment implements IPathSegment{
 	}
 
 	@Override
-	public boolean getShot(long startTime, float startX, float startY,
+	public boolean getShoot(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 		return false;
 	}

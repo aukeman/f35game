@@ -11,9 +11,9 @@ public abstract class CompositePath implements IPath{
 
 	private List<IPathSegment> mSegments;
 	
-	private static IGetFloatValue ourGetLeft;
+	private static IGetFloatValue ourGetX;
 	
-	private static IGetFloatValue ourGetTop;
+	private static IGetFloatValue ourGetY;
 	
 	private static IGetFloatValue ourGetHeading;
 	
@@ -21,7 +21,7 @@ public abstract class CompositePath implements IPath{
 	
 	private static IGetFloatValue ourGetRoll;
 	
-	private static IGetBooleanValue ourGetShot;
+	private static IGetBooleanValue ourGetShoot;
 	
 	private static IGetBooleanValue ourIsComplete;
 	
@@ -35,17 +35,17 @@ public abstract class CompositePath implements IPath{
 	}
 	
 	@Override
-	public float getLeft(long startTime, float startX, float startY,
+	public float getX(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 		
-		return calculateFloatValue(ourGetLeft, startTime, startX, startY, frameInfo);
+		return calculateFloatValue(ourGetX, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
-	public float getTop(long startTime, float startX, float startY,
+	public float getY(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateFloatValue(ourGetTop, startTime, startX, startY, frameInfo);
+		return calculateFloatValue(ourGetY, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
@@ -70,10 +70,10 @@ public abstract class CompositePath implements IPath{
 	}
 
 	@Override
-	public boolean getShot(long startTime, float startX, float startY,
+	public boolean getShoot(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateBooleanValue(ourGetShot, startTime, startX, startY, frameInfo);
+		return calculateBooleanValue(ourGetShoot, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
@@ -81,38 +81,6 @@ public abstract class CompositePath implements IPath{
 			IFrameInfo frameInfo) {
 
 		return calculateBooleanValue(ourIsComplete, startTime, startX, startY, frameInfo);
-	}
-
-	@Override
-	public long getDuration() {
-
-		long result = 0;
-		
-		for ( IPathSegment segment : mSegments ){
-			result += segment.getDuration();
-		}
-		
-		return result;
-	}
-
-	@Override
-	public float getFinalX(float startX) {
-		
-		for ( IPathSegment segment : mSegments ){
-			startX = segment.getFinalX(startX);
-		}
-		
-		return startX;
-	}
-
-	@Override
-	public float getFinalY(float startY) {
-
-		for ( IPathSegment segment : mSegments ){
-			startY = segment.getFinalX(startY);
-		}
-		
-		return startY;
 	}
 
 	private float calculateFloatValue(IGetFloatValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
@@ -170,20 +138,20 @@ public abstract class CompositePath implements IPath{
 	}
 
 	static {
-		ourGetLeft = new IGetFloatValue() {
+		ourGetX = new IGetFloatValue() {
 			
 			@Override
 			public float calculate(IPathSegment segment, long startTime, float startX,
 					float startY, IFrameInfo frameInfo) {
-				return segment.getLeft(startTime, startX, startY, frameInfo);
+				return segment.getX(startTime, startX, startY, frameInfo);
 			}};
 
-		ourGetTop = new IGetFloatValue() {
+		ourGetY = new IGetFloatValue() {
 			
 			@Override
 			public float calculate(IPathSegment segment, long startTime, float startX,
 					float startY, IFrameInfo frameInfo) {
-				return segment.getTop(startTime, startX, startY, frameInfo);
+				return segment.getY(startTime, startX, startY, frameInfo);
 			}};
 
 		ourGetHeading = new IGetFloatValue() {
@@ -210,12 +178,12 @@ public abstract class CompositePath implements IPath{
 				return segment.getPitch(startTime, startX, startY, frameInfo);
 			}};
 			
-		ourGetShot = new IGetBooleanValue() {
+		ourGetShoot = new IGetBooleanValue() {
 			
 			@Override
 			public boolean calculate(IPathSegment segment, long startTime,
 					float startX, float startY, IFrameInfo frameInfo) {
-				return segment.getShot(startTime, startX, startY, frameInfo);
+				return segment.getShoot(startTime, startX, startY, frameInfo);
 			}
 		};
 	
