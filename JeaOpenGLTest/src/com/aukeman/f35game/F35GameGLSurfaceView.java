@@ -82,7 +82,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		badguys = new LinkedList<BadguyView>();
 		
-		mFrameInfo = new FrameInfo(true);
+		mFrameInfo = new FrameInfo(false);
 		
 	}
 

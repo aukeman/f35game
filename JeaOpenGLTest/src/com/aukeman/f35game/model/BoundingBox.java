@@ -55,7 +55,7 @@ public class BoundingBox {
 			return this.mLeft + this.mWidth;
 		}
 		
-		public boolean testCollision( BoundingBox other ){
+		public boolean overlaps( BoundingBox other ){
 			return ( this.getLeft() < other.getLeft() + other.getWidth() &&
 					 other.getLeft() < this.getLeft() + this.getWidth()  &&
 					 this.getTop()  < other.getTop() + other.getHeight()&&

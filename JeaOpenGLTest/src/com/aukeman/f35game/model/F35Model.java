@@ -31,6 +31,9 @@ public class F35Model extends AbstractModel {
 		mRollAngle = 0.0f;
 		
 		this.mBullets = new LinkedList<BulletModel>();
+		
+		this.getBoundingBoxes().clear();
+		this.getBoundingBoxes().add(new BoundingBox(0, 10, 48, 12));
 	}
 	
 	public void setControls(JoystickModel joystick, 
@@ -102,6 +105,14 @@ public class F35Model extends AbstractModel {
 		}
 		else if ( mViewport.getRight() < left + getWidth() ){
 			left = mViewport.getRight() - getWidth();
+		}
+		
+		float xDistance=left-this.getLeft();
+		float yDistance=top-this.getTop();
+		
+		for ( BoundingBox bbox : getBoundingBoxes() ){
+			bbox.setTop(bbox.getTop() + yDistance);
+			bbox.setLeft(bbox.getLeft() + xDistance);
 		}
 		
 		this.moveTo(top, left);

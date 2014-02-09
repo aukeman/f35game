@@ -76,7 +76,7 @@ public class FrameInfo implements IFrameInfo {
 		mTopOfLastFrame = mTopOfFrame;
 		mTopOfFrame = System.currentTimeMillis() - mStartTime;
 
-		if ( mCalculateFrameRate && mTopOfFrame % 1000 < mTopOfLastFrame % 1000 ){
+		if ( mCalculateFrameRate && mTopOfFrame % 250 < mTopOfLastFrame % 1000 ){
 			mFrameRate = (float)(mFrameCount - mFrameCountLastFrameRateCalculated ) / (mTopOfFrame - mTimeLastFrameRateCalculated ) * 1000 ;
 			mFrameRateString = String.format("FPS: %.1f", mFrameRate);
 			mTimeLastFrameRateCalculated = mTopOfFrame;
