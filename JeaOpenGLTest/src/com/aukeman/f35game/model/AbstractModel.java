@@ -33,9 +33,16 @@ public abstract class AbstractModel extends BoundingBox implements IUpdatable, I
 	}
 	
 	public boolean testCollision( ICollidable other ){
-		for ( BoundingBox thisBBox : mBoundingBoxes ){
-			for ( BoundingBox otherBBox : other.getBoundingBoxes() ){
-				if ( thisBBox.overlaps(otherBBox) ){
+		
+		for ( int idx1 = 0;
+			  idx1 < mBoundingBoxes.size();
+			  ++idx1 ){
+			
+			for ( int idx2 = 0;
+				  idx2 < other.getBoundingBoxes().size();
+				  ++idx2 ){
+
+				if ( this.mBoundingBoxes.get(idx1).overlaps(other.getBoundingBoxes().get(idx2)) ){
 					return true;
 				}
 			}

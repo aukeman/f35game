@@ -217,24 +217,42 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 	
-		for ( IUpdatable updatable : mUpdatables ){
-			updatable.update(mFrameInfo);
+		for ( int idx = 0;
+		      idx < mUpdatables.size();
+			  ++idx ){
+			
+			mUpdatables.get(idx).update(mFrameInfo);
 		}
 		
-		for (IDrawable d : mDrawables){
-			d.draw(mMVPMatrix);
+		
+		for ( int idx = 0;
+			  idx < mDrawables.size();
+			  ++idx ){
+
+			mDrawables.get(idx).draw(mMVPMatrix);
 		}
 		
 		boolean collision = false;
 		
-		for ( BadguyView badguy : badguys ){
+		for ( int badguyIdx = 0;
+			  badguyIdx < badguys.size();
+			  ++badguyIdx ){
+
+			BadguyView badguy = badguys.get(badguyIdx);
+
 			if ( badguy.isActive() ){
 
 				if ( ownship.getModel().testCollision(badguy.getModel() ) ){
 					collision = true;
 				}
 
-				for (BulletView bullet : bullets){
+				
+				for ( int bulletIdx = 0;
+					  bulletIdx < bullets.size();
+					  ++bulletIdx ){
+				
+					BulletView bullet = bullets.get(bulletIdx);
+
 					if ( bullet.getModel().isActive() ){
 
 						if ( badguy.getModel().testCollision(bullet.getModel()) ){
@@ -256,34 +274,35 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
-		int idx = event.getActionIndex();
-		float x = mViewport.getXFromScreenX(event.getX(idx));
-		float y = mViewport.getYFromScreenY(event.getY(idx));
+		int pIdx = event.getActionIndex();
+		float x = mViewport.getXFromScreenX(event.getX(pIdx));
+		float y = mViewport.getYFromScreenY(event.getY(pIdx));
 		
 		switch (event.getActionMasked()){
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN:
 			
-			for (TouchWidgetModel w : mWidgets){
-				w.handleDown(x, y, idx);
+			for ( int wIdx = 0; wIdx < mWidgets.size(); ++wIdx ){
+				mWidgets.get(wIdx).handleDown(x, y, pIdx);
 			}
 
 			break;
 		
 		case MotionEvent.ACTION_MOVE:
 			
-			for ( idx = 0; idx < event.getPointerCount(); ++idx )			{
-				for (TouchWidgetModel w : mWidgets){
-					w.handleMove(x, y, idx);
+			for ( pIdx = 0; pIdx < event.getPointerCount(); ++pIdx )			{
+				
+				for ( int wIdx = 0; wIdx < mWidgets.size(); ++wIdx ){
+					mWidgets.get(wIdx).handleMove(x, y, pIdx);
 				}
 			}
 			break;
 			
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_POINTER_UP:
-			
-			for (TouchWidgetModel w : mWidgets){
-				w.handleUp(x, y, idx);
+
+			for ( int wIdx = 0; wIdx < mWidgets.size(); ++wIdx ){
+				mWidgets.get(wIdx).handleUp(x, y, pIdx);
 			}
 			break;
 		}

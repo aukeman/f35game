@@ -110,7 +110,12 @@ public class F35Model extends AbstractModel {
 		float xDistance=left-this.getLeft();
 		float yDistance=top-this.getTop();
 		
-		for ( BoundingBox bbox : getBoundingBoxes() ){
+		for ( int bboxIdx = 0;
+			  bboxIdx < getBoundingBoxes().size();
+			  ++bboxIdx ){
+
+			BoundingBox bbox = getBoundingBoxes().get(bboxIdx);
+			
 			bbox.setTop(bbox.getTop() + yDistance);
 			bbox.setLeft(bbox.getLeft() + xDistance);
 		}
@@ -118,7 +123,12 @@ public class F35Model extends AbstractModel {
 		this.moveTo(top, left);
 		
 		if ( mButton.pressed() ){
-			for ( BulletModel bullet : mBullets ){
+			
+			for ( int bulletIdx = 0;
+				  bulletIdx < mBullets.size();
+				  ++bulletIdx ){
+
+				BulletModel bullet = mBullets.get(bulletIdx);
 
 				if ( !bullet.isActive() ){
 					bullet.moveTo(top - bullet.getHeight(), left + getWidth()/2);

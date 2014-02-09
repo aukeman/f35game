@@ -48,7 +48,12 @@ public class BadguyFactory implements IUpdatable {
 				mBadguyTimes.get(mNextBadguyIndex) <= frameInfo.getTopOfFrame() ){
 			
 			boolean availableBadguyFound = false;
-			for ( BadguyView badguy : mBadguyPool ){
+			for ( int idx = 0;
+				  idx < mBadguyPool.size();
+				  ++idx ){
+				
+				BadguyView badguy = mBadguyPool.get(idx);
+				
 				if ( !badguy.isActive() ){
 					
 					badguy.activate(frameInfo, mSprite, -16, 100, mPath);

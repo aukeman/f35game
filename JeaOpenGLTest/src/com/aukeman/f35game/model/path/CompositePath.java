@@ -84,11 +84,15 @@ public class CompositePath implements IPath{
 	}
 
 	private float calculateFloatValue(IGetFloatValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
-		int idx = 0;
 
 		float result = 0.0f;
 		
-		for ( IPathSegment segment : mSegments ){
+		for ( int idx = 0;
+			  idx < mSegments.size();
+			  ++idx )
+		{
+			IPathSegment segment = mSegments.get(idx);	
+			
 			if ( idx == (mSegments.size()-1) ||
 				 !segment.isComplete(startTime, startX, startY, frameInfo) ){
 				result = getter.calculate(segment, startTime, startX, startY, frameInfo);
@@ -99,19 +103,21 @@ public class CompositePath implements IPath{
 				startX = segment.getFinalX(startX);
 				startY = segment.getFinalY(startY);
 			}
-			
-			++idx;
 		}
 		
 		return result;
 	}
 	
 	private boolean calculateBooleanValue(IGetBooleanValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
-		int idx = 0;
 
 		boolean result = false;
-		
-		for ( IPathSegment segment : mSegments ){
+
+		for ( int idx = 0;
+			  idx < mSegments.size();
+			  ++idx ){
+
+			IPathSegment segment = mSegments.get(idx);
+			
 			if ( idx == (mSegments.size()-1) ||
 				 !segment.isComplete(startTime, startX, startY, frameInfo) ){
 				result = getter.calculate(segment, startTime, startX, startY, frameInfo);
