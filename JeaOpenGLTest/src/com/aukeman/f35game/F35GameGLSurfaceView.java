@@ -226,7 +226,31 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 			d.draw(mMVPMatrix);
 		}
 		
+		boolean collision = false;
+		
+		for ( BadguyView badguy : badguys ){
+			if ( badguy.isActive() ){
+
+				if ( ownship.getModel().testCollision(badguy.getModel() ) ){
+					collision = true;
+				}
+
+				for (BulletView bullet : bullets){
+					if ( bullet.getModel().isActive() ){
+
+						if ( badguy.getModel().testCollision(bullet.getModel()) ){
+							collision = true;
+						}
+					}
+				}
+			}
+		}
+		
 		font.drawString(mMVPMatrix, mViewport.getTop()+5, mViewport.getLeft()+5, mFrameInfo.getFrameRateString());
+
+		if ( collision ){
+			font.drawString(mMVPMatrix, mViewport.getBottom() - 24, mViewport.getLeft() + 32, "boom!");
+		}
 		
 	}
 

@@ -3,51 +3,16 @@ package com.aukeman.f35game.model;
 import com.aukeman.f35game.IFrameInfo;
 import com.aukeman.f35game.model.interfaces.IUpdatable;
 
-public abstract class AbstractModel implements IUpdatable {
+public abstract class AbstractModel extends BoundingBox implements IUpdatable {
 
-	private float mTop;
-	
-	private float mLeft;
-	
-	private float mHeight;
-	
-	private float mWidth;
-	
-	public float getTop(){
-		return mTop;
-	}
 	
 	public AbstractModel(float height, float width){
-		this.mTop = 0.0f;
-		this.mLeft = 0.0f;
-		
-		this.mHeight = height;
-		this.mWidth = width;
+		super(0.0f, 0.0f, height,width);
 	}
-	
-	public float getLeft(){
-		return mLeft;
-	}
-	
-	public float getWidth(){
-		return mWidth;
-	}
-	
-	public float getHeight(){
-		return mHeight;
-	}
-	
-	public void setWidth(float width){
-		mWidth = width;
-	}
-	
-	public void setHeight(float height){
-		mHeight = height;
-	}
-	
+	 
 	public void moveTo(float top, float left){
-		this.mTop = top;
-		this.mLeft = left;
+		setTop(top);
+		setLeft(left);
 	}
 	
 	@Override
