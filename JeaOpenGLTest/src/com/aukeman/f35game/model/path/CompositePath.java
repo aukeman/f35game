@@ -1,6 +1,6 @@
 package com.aukeman.f35game.model.path;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.aukeman.f35game.IFrameInfo;
@@ -26,7 +26,7 @@ public class CompositePath implements IPath{
 	private static IGetBooleanValue ourIsComplete;
 	
 	public CompositePath(){
-		mSegments = new LinkedList<IPathSegment>();
+		mSegments = new ArrayList<IPathSegment>();
 	}
 
 	

@@ -23,9 +23,11 @@ public class BadguyFactory implements IUpdatable {
 	
 	private IDrawable mSprite;
 	
-	private Queue<Long> mBadguyTimes;
+	private List<Long> mBadguyTimes;
 	
-	public BadguyFactory(Context context, List<BadguyView> badguyPool, Queue<Long> badguyTimes){
+	int mNextBadguyIndex;
+	
+	public BadguyFactory(Context context, List<BadguyView> badguyPool, List<Long> badguyTimes){
 		this.mBadguyPool = badguyPool;
 	
 		mPath = new CompositePath();
@@ -34,16 +36,16 @@ public class BadguyFactory implements IUpdatable {
 		mSprite = new Sprite(context, 16, 16, R.drawable.sprite, 2, 2);
 		
 		mBadguyTimes = badguyTimes;
+
+		mNextBadguyIndex = 0;
 	}
-	
 	
 	
 	@Override
 	public void update(IFrameInfo frameInfo) {
 
-		Long nextBadguyTime = mBadguyTimes.peek(); 
-		while ( nextBadguyTime != null &&
-				nextBadguyTime <= frameInfo.getTopOfFrame() ){
+		while ( mNextBadguyIndex < mBadguyTimes.size() &&
+				mBadguyTimes.get(mNextBadguyIndex) <= frameInfo.getTopOfFrame() ){
 			
 			boolean availableBadguyFound = false;
 			for ( BadguyView badguy : mBadguyPool ){
@@ -51,7 +53,7 @@ public class BadguyFactory implements IUpdatable {
 					
 					badguy.activate(frameInfo, mSprite, -16, 100, mPath);
 					
-					mBadguyTimes.poll();
+					mNextBadguyIndex += 1;
 					availableBadguyFound = true;
 					break;
 				}
@@ -61,7 +63,6 @@ public class BadguyFactory implements IUpdatable {
 				break;
 			}
 			
-			nextBadguyTime = mBadguyTimes.peek();
 		}
 		
 	}

@@ -1,6 +1,6 @@
 package com.aukeman.f35game.view;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -26,7 +26,7 @@ public class F35View extends AbstractView{
 		setModel(mModel);
 		setDrawable(mSprite);
 		
-		mBullets = new LinkedList<BulletView>();
+		mBullets = new ArrayList<BulletView>();
 	}
 
 	public F35Model getModel(){

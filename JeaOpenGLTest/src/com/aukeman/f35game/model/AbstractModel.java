@@ -1,6 +1,6 @@
 package com.aukeman.f35game.model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.aukeman.f35game.IFrameInfo;
@@ -14,7 +14,7 @@ public abstract class AbstractModel extends BoundingBox implements IUpdatable, I
 	public AbstractModel(float height, float width){
 		super(0.0f, 0.0f, height,width);
 		
-		mBoundingBoxes = new LinkedList<BoundingBox>();
+		mBoundingBoxes = new ArrayList<BoundingBox>();
 		mBoundingBoxes.add(this);
 	}
 	 

@@ -1,7 +1,7 @@
 package com.aukeman.f35game;
 
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
@@ -15,7 +15,6 @@ import android.opengl.Matrix;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.aukeman.f35game.R;
 import com.aukeman.f35game.model.BadguyFactory;
 import com.aukeman.f35game.model.TouchWidgetModel;
 import com.aukeman.f35game.model.interfaces.IUpdatable;
@@ -74,13 +73,13 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 		
 		mViewport = null;
-		mWidgets = new LinkedList<TouchWidgetModel>();
-		mDrawables = new LinkedList<IDrawable>();
-		mUpdatables = new LinkedList<IUpdatable>();
+		mWidgets = new ArrayList<TouchWidgetModel>();
+		mDrawables = new ArrayList<IDrawable>();
+		mUpdatables = new ArrayList<IUpdatable>();
 		
-		bullets = new LinkedList<BulletView>();
+		bullets = new ArrayList<BulletView>();
 		
-		badguys = new LinkedList<BadguyView>();
+		badguys = new ArrayList<BadguyView>();
 		
 		mFrameInfo = new FrameInfo(false);
 		
@@ -117,7 +116,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		badguys.add(new BadguyView());
 		badguys.add(new BadguyView());
 
-		Queue<Long> badguyTimes = new LinkedList<Long>();
+		List<Long> badguyTimes = new ArrayList<Long>();
 		badguyTimes.add(5000L);
 		badguyTimes.add(10000L);
 		badguyTimes.add(15000L);

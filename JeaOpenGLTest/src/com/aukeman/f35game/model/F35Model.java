@@ -1,6 +1,6 @@
 package com.aukeman.f35game.model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.aukeman.f35game.IFrameInfo;
@@ -30,7 +30,7 @@ public class F35Model extends AbstractModel {
 		
 		mRollAngle = 0.0f;
 		
-		this.mBullets = new LinkedList<BulletModel>();
+		this.mBullets = new ArrayList<BulletModel>();
 		
 		this.getBoundingBoxes().clear();
 		this.getBoundingBoxes().add(new BoundingBox(0, 10, 48, 12));
