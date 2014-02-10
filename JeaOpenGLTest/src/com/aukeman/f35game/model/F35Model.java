@@ -32,8 +32,10 @@ public class F35Model extends AbstractModel {
 		
 		this.mBullets = new ArrayList<BulletModel>();
 		
-		this.getBoundingBoxes().clear();
-		this.getBoundingBoxes().add(new BoundingBox(0, 10, 48, 12));
+		this.getCollisionAreas().clear();
+		this.getCollisionAreas().add(new BoundingBox(16, 10, 32, 12)); //fuselage
+		this.getCollisionAreas().add(new BoundingBox(0, 14, 48, 4)); // nose
+		this.getCollisionAreas().add(new BoundingBox(28, 4, 8, 24)); //wings
 	}
 	
 	public void setControls(JoystickModel joystick, 
@@ -111,10 +113,10 @@ public class F35Model extends AbstractModel {
 		float yDistance=top-this.getTop();
 		
 		for ( int bboxIdx = 0;
-			  bboxIdx < getBoundingBoxes().size();
+			  bboxIdx < getCollisionAreas().size();
 			  ++bboxIdx ){
 
-			BoundingBox bbox = getBoundingBoxes().get(bboxIdx);
+			BoundingBox bbox = getCollisionAreas().get(bboxIdx);
 			
 			bbox.setTop(bbox.getTop() + yDistance);
 			bbox.setLeft(bbox.getLeft() + xDistance);

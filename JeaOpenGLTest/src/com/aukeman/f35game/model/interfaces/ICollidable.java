@@ -8,5 +8,7 @@ public interface ICollidable {
 
 	public boolean testCollision( ICollidable other );
 	
-	public List<BoundingBox> getBoundingBoxes();
+	public BoundingBox getBoundingBox();
+	
+	public List<BoundingBox> getCollisionAreas();
 }

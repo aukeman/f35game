@@ -9,13 +9,12 @@ import com.aukeman.f35game.model.interfaces.IUpdatable;
 
 public abstract class AbstractModel extends BoundingBox implements IUpdatable, ICollidable {
 
-	private List<BoundingBox> mBoundingBoxes;
+	private List<BoundingBox> mCollisionAreas;
 	
 	public AbstractModel(float height, float width){
 		super(0.0f, 0.0f, height,width);
 		
-		mBoundingBoxes = new ArrayList<BoundingBox>();
-		mBoundingBoxes.add(this);
+		mCollisionAreas = new ArrayList<BoundingBox>();
 	}
 	 
 	public void moveTo(float top, float left){
@@ -28,27 +27,64 @@ public abstract class AbstractModel extends BoundingBox implements IUpdatable, I
 		/* no-op */
 	}
 	
-	public List<BoundingBox> getBoundingBoxes(){
-		return mBoundingBoxes;
+	public BoundingBox getBoundingBox(){
+		return this;
+	}
+	
+	public List<BoundingBox> getCollisionAreas(){
+		return mCollisionAreas;
 	}
 	
 	public boolean testCollision( ICollidable other ){
 		
-		for ( int idx1 = 0;
-			  idx1 < mBoundingBoxes.size();
-			  ++idx1 ){
+		boolean result = false;
+		
+		if ( this.getBoundingBox().overlaps(other.getBoundingBox()) ){
 			
-			for ( int idx2 = 0;
-				  idx2 < other.getBoundingBoxes().size();
-				  ++idx2 ){
+			if ( this.getCollisionAreas().size() == 0 && other.getCollisionAreas().size() == 0 ){
+				result = true;
+			}
+			else if ( 0 < this.getCollisionAreas().size() && 0 < other.getCollisionAreas().size() ){
+				
+				for ( int idx1 = 0;
+						!result && idx1 < getCollisionAreas().size();
+						++idx1 ){
+					
+					for ( int idx2 = 0;
+							!result && idx2 < other.getCollisionAreas().size();
+							++idx2 ){
+						
+						if ( this.getCollisionAreas().get(idx1).overlaps(other.getCollisionAreas().get(idx2)) ){
+							result = true;
+						}
+					}
+				}
+			}
+			else if ( 0 < this.getCollisionAreas().size() ){
 
-				if ( this.mBoundingBoxes.get(idx1).overlaps(other.getBoundingBoxes().get(idx2)) ){
-					return true;
+				for ( int idx = 0; 
+					  !result && idx < this.getCollisionAreas().size(); 
+					  ++idx ){
+					
+					if ( this.getCollisionAreas().get(idx).overlaps(other.getBoundingBox()) ){
+						result = true;
+					}
+				}
+			}
+			else { // 0 < other.getCollisionAreas().size()
+				
+				for ( int idx = 0; 
+						  !result && idx < other.getCollisionAreas().size(); 
+						  ++idx ){
+						
+					if ( this.getBoundingBox().overlaps(other.getCollisionAreas().get(idx)) ){
+						result = true;
+					}
 				}
 			}
 		}
 		
-		return false;
+		return result;
 	}
 
 	
