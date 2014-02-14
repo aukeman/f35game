@@ -37,7 +37,7 @@ public abstract class AbstractPathSegment implements IPathSegment {
 		if ( percentComplete < 0.0f ){
 			return startX;
 		}
-		if ( percentComplete < 1.0f ){
+		else if ( percentComplete < 1.0f ){
 			return calculateXAtPercentComplete(percentComplete) + startX;
 		}
 		else{
@@ -51,7 +51,10 @@ public abstract class AbstractPathSegment implements IPathSegment {
 
 		float percentComplete = getPercentComplete(startTime, frameInfo);
 		
-		if ( percentComplete < 1.0f ){
+		if ( percentComplete < 0.0f ){
+			return startY;
+		}
+		else if ( percentComplete < 1.0f ){
 			return calculateYAtPercentComplete(percentComplete) + startY;
 		}
 		else{

@@ -117,12 +117,12 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		badguys.add(new BadguyView());
 
 		List<Long> badguyTimes = new ArrayList<Long>();
-		badguyTimes.add(5000L);
-		badguyTimes.add(10000L);
-		badguyTimes.add(15000L);
-		badguyTimes.add(20000L);
-		badguyTimes.add(25000L);
-		badguyTimes.add(30000L);
+		badguyTimes.add(2000L);
+//		badguyTimes.add(10000L);
+//		badguyTimes.add(15000L);
+//		badguyTimes.add(20000L);
+//		badguyTimes.add(25000L);
+//		badguyTimes.add(30000L);
 		
 		badguyFactory = new BadguyFactory(getContext(), badguys, badguyTimes);
 		

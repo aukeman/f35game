@@ -17,7 +17,7 @@ public class TurnSegment extends AbstractPathSegment {
 	private float mXCoordinates[] = new float[COORDINATES_TABLE_LENGTH];
 	private float mYCoordinates[] = new float[COORDINATES_TABLE_LENGTH];
 	
-	public TurnSegment( float startHeading, float turnAmount, float radius, float speed ){
+	public TurnSegment( float startHeading, float turnAmount, float speed, float radius ){
 		this.mStartHeading = startHeading;
 		this.mTurnAmount = turnAmount;
 		this.mRadius = radius;
@@ -26,7 +26,11 @@ public class TurnSegment extends AbstractPathSegment {
 		float turnAmountRadians = (float)(mTurnAmount*Math.PI/180);
 		float startHeadingRadians = (float)(mStartHeading*Math.PI/180);
 		
-		long duration = (long)((turnAmountRadians)*mRadius / mSpeed * 1000);
+		long duration = (long)(Math.abs(turnAmountRadians*mRadius) / mSpeed * 1000);
+		
+		if ( turnAmount < 0.0f ){
+			radius *= -1.0f;
+		}
 		
 		for ( int idx = 0; idx < COORDINATES_TABLE_LENGTH; ++idx ){
 			
@@ -35,7 +39,7 @@ public class TurnSegment extends AbstractPathSegment {
 			float intermediateTurnAmountRadians = turnAmountRadians*percent;
 			
 			float tempX = -radius*(float)Math.cos(intermediateTurnAmountRadians) + radius;
-			float tempY = -radius*(float)Math.sin(intermediateTurnAmountRadians);
+			float tempY = radius*(float)Math.sin(intermediateTurnAmountRadians);
 			
 			// rotate x and y to account for initial heading
 			float x = (float)(tempX*Math.cos(startHeadingRadians) + tempY*Math.sin(startHeadingRadians));
