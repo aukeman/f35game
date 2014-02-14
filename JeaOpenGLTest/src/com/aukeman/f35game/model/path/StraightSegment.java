@@ -3,67 +3,32 @@ package com.aukeman.f35game.model.path;
 import com.aukeman.f35game.IFrameInfo;
 import com.aukeman.f35game.model.interfaces.IPathSegment;
 
-public class StraightSegment implements IPathSegment{
+public class StraightSegment extends AbstractPathSegment{
 
-	private float mStartX;
-	
-	private float mStartY;
-	
-	private float mEndX;
-	
-	private float mEndY;
-	
 	private float mSpeed;
-	
-	private long mDuration;
 	
 	private float mHeading;
 	
 	public StraightSegment(float heading, float speed, float distance){
-		this.mStartX = 0.0f;
-		this.mStartY = 0.0f;
-		
 		this.mSpeed = speed;
 		this.mHeading = heading;
 		
-		this.mDuration = (long)(distance / mSpeed) * 1000;
+		long duration = ( (long)(distance / mSpeed) * 1000 );
 		
-		this.mEndX = distance *  (float)Math.sin((Math.PI/180.0) * mHeading);
-		this.mEndY = distance * -(float)Math.cos((Math.PI/180.0) * mHeading);
+		float endX = ( distance *  (float)Math.sin((Math.PI/180.0) * mHeading) );
+		float endY = ( distance * -(float)Math.cos((Math.PI/180.0) * mHeading) );
+
+		initialize( endX, endY, duration );
 	}
 	
-	@Override
-	public float getX(long startTime, 
-			             float startX, 
-			             float startY,
-			             IFrameInfo frameInfo) {
-
-		float percentComplete = getPercentComplete(startTime, frameInfo);
-		
-		if ( percentComplete < 1.0f ){
-			return percentComplete * (mEndX - mStartX) + startX;
-		}
-		else{
-			return mEndX;
-		}
+	public float calculateXAtPercentComplete(float percentComplete){
+		return percentComplete * getEndX();
 	}
-
-	@Override
-	public float getY(long startTime, 
-			           float startX, 
-			           float startY,
-			           IFrameInfo frameInfo) {
-
-		float percentComplete = getPercentComplete(startTime, frameInfo);
-		
-		if ( percentComplete < 1.0f ){
-			return percentComplete * (mEndY - mStartY) + startY;
-		}
-		else{
-			return mEndY;
-		}
+	
+	public float calculateYAtPercentComplete(float percentComplete){
+		return percentComplete * getEndY();
 	}
-
+	
 	@Override
 	public float getHeading(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
@@ -87,30 +52,5 @@ public class StraightSegment implements IPathSegment{
 	public boolean getShoot(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 		return false;
-	}
-
-	@Override
-	public boolean isComplete(long startTime, float startX, float startY,
-			IFrameInfo frameInfo) {
-		return (1.0 <= getPercentComplete(startTime, frameInfo));
-	}
-
-	@Override
-	public long getDuration() {
-		return mDuration;
-	}
-
-	@Override
-	public float getFinalX(float startX) {
-		return mEndX + startX;
-	}
-
-	@Override
-	public float getFinalY(float startY) {
-		return mEndY + startY;
-	}
-
-	private float getPercentComplete(long startTime, IFrameInfo frameInfo){
-		return (float)(frameInfo.getTopOfFrame() - startTime) / mDuration;
 	}
 }
