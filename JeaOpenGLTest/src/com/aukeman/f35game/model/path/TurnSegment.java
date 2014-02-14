@@ -12,7 +12,7 @@ public class TurnSegment extends AbstractPathSegment {
 	private float mRollAngle;
 	
 	
-	private static final int COORDINATES_TABLE_LENGTH = 16;
+	private static final int COORDINATES_TABLE_LENGTH = 32;
 	
 	private float mXCoordinates[] = new float[COORDINATES_TABLE_LENGTH];
 	private float mYCoordinates[] = new float[COORDINATES_TABLE_LENGTH];
@@ -34,8 +34,8 @@ public class TurnSegment extends AbstractPathSegment {
 			
 			float intermediateTurnAmountRadians = turnAmountRadians*percent;
 			
-			float tempX = -radius*(float)Math.cos(intermediateTurnAmountRadians/(2*Math.PI));
-			float tempY = -radius*(float)Math.sin(intermediateTurnAmountRadians/(2*Math.PI));
+			float tempX = -radius*(float)Math.cos(intermediateTurnAmountRadians) + radius;
+			float tempY = -radius*(float)Math.sin(intermediateTurnAmountRadians);
 			
 			// rotate x and y to account for initial heading
 			float x = (float)(tempX*Math.cos(startHeadingRadians) + tempY*Math.sin(startHeadingRadians));
@@ -62,7 +62,7 @@ public class TurnSegment extends AbstractPathSegment {
 	@Override
 	public float calculateXAtPercentComplete(float percent) {
 
-		float fractionalIndex = COORDINATES_TABLE_LENGTH*percent;
+		float fractionalIndex = (COORDINATES_TABLE_LENGTH-1)*percent;
 		
 		int idx = (int)fractionalIndex;
 		float remainder = fractionalIndex-idx;
@@ -72,7 +72,7 @@ public class TurnSegment extends AbstractPathSegment {
 	
 	@Override
 	public float calculateYAtPercentComplete(float percent) {
-		float fractionalIndex = COORDINATES_TABLE_LENGTH*percent;
+		float fractionalIndex = (COORDINATES_TABLE_LENGTH-1)*percent;
 		
 		int idx = (int)fractionalIndex;
 		float remainder = fractionalIndex-idx;

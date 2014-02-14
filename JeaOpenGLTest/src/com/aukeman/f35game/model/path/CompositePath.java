@@ -128,8 +128,6 @@ public class CompositePath implements IPath{
 				startX = segment.getFinalX(startX);
 				startY = segment.getFinalY(startY);
 			}
-			
-			++idx;
 		}
 		
 		return result;

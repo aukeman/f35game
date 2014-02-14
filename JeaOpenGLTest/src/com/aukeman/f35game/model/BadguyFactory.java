@@ -11,6 +11,7 @@ import com.aukeman.f35game.model.interfaces.IPath;
 import com.aukeman.f35game.model.interfaces.IUpdatable;
 import com.aukeman.f35game.model.path.CompositePath;
 import com.aukeman.f35game.model.path.StraightSegment;
+import com.aukeman.f35game.model.path.TurnSegment;
 import com.aukeman.f35game.view.BadguyView;
 import com.aukeman.f35game.view.Sprite;
 import com.aukeman.f35game.view.interfaces.IDrawable;
@@ -31,7 +32,9 @@ public class BadguyFactory implements IUpdatable {
 		this.mBadguyPool = badguyPool;
 	
 		mPath = new CompositePath();
-		mPath.addSegment(new StraightSegment(180.0f, 20f, 300f));
+		mPath.addSegment(new StraightSegment(180.0f, 20f, 100f));
+		mPath.addSegment(new TurnSegment(180.0f, 360.0f, 50, 20));
+		mPath.addSegment(new StraightSegment(180.0f, 20.0f, 200f));
 		
 		mSprite = new Sprite(context, 16, 16, R.drawable.sprite, 2, 2);
 		
