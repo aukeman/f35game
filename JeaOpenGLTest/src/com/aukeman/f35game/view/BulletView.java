@@ -3,10 +3,11 @@ package com.aukeman.f35game.view;
 import android.content.Context;
 
 import com.aukeman.f35game.R;
+import com.aukeman.f35game.interfaces.IPoolable;
 import com.aukeman.f35game.model.BulletModel;
 import com.aukeman.f35game.view.interfaces.IDrawable;
 
-public class BulletView extends AbstractView {
+public class BulletView extends AbstractView implements IPoolable {
 
 	private static IDrawable ourGoodguyBulletSprite = null;
 	
@@ -51,5 +52,10 @@ public class BulletView extends AbstractView {
 	
 	public BulletModel getModel(){
 		return mModel;
+	}
+	
+	@Override
+	public boolean available() {
+		return !getModel().isActive();
 	}
 }

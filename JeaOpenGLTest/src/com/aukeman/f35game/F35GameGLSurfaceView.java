@@ -57,11 +57,11 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	private List<IDrawable> mDrawables;
 	private List<IUpdatable> mUpdatables;
 	
-	private List<BulletView> bullets;
+	private Pool<BulletView> bullets;
 	
-	private List<BadguyView> badguys;
+	private Pool<BadguyView> badguys;
 	
-	private List<BulletView> badguyBullets;
+	private Pool<BulletView> badguyBullets;
 
 	private BadguyFactory badguyFactory;
 	
@@ -79,11 +79,11 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		mDrawables = new ArrayList<IDrawable>();
 		mUpdatables = new ArrayList<IUpdatable>();
 		
-		bullets = new ArrayList<BulletView>();
+		bullets = new Pool<BulletView>();
 		
-		badguys = new ArrayList<BadguyView>();
+		badguys = new Pool<BadguyView>();
 		
-		badguyBullets = new ArrayList<BulletView>();
+		badguyBullets = new Pool<BulletView>();
 		
 		mFrameInfo = new FrameInfo(false);
 		
@@ -250,31 +250,16 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		boolean collision = false;
 		
-		for ( int badguyIdx = 0;
-			  badguyIdx < badguys.size();
-			  ++badguyIdx ){
+		for ( BadguyView badguy : badguys.getObjectsInUse() ){
 
-			BadguyView badguy = badguys.get(badguyIdx);
+			if ( ownship.getModel().testCollision(badguy.getModel() ) ){
+				collision = true;
+			}
 
-			if ( badguy.isActive() ){
-
-				if ( ownship.getModel().testCollision(badguy.getModel() ) ){
+			for ( BulletView bullet : bullets.getObjectsInUse() ){
+				
+				if ( badguy.getModel().testCollision(bullet.getModel()) ){
 					collision = true;
-				}
-
-				
-				for ( int bulletIdx = 0;
-					  bulletIdx < bullets.size();
-					  ++bulletIdx ){
-				
-					BulletView bullet = bullets.get(bulletIdx);
-
-					if ( bullet.getModel().isActive() ){
-
-						if ( badguy.getModel().testCollision(bullet.getModel()) ){
-							collision = true;
-						}
-					}
 				}
 			}
 		}

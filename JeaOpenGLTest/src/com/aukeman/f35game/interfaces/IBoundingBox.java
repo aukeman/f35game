@@ -1,4 +1,4 @@
-package com.aukeman.f35game.model.interfaces;
+package com.aukeman.f35game.interfaces;
 
 public interface IBoundingBox {
 

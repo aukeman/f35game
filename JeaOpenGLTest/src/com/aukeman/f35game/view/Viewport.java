@@ -1,6 +1,6 @@
 package com.aukeman.f35game.view;
 
-import com.aukeman.f35game.model.interfaces.IBoundingBox;
+import com.aukeman.f35game.interfaces.IBoundingBox;
 import com.aukeman.f35game.view.interfaces.IViewport;
 
 public class Viewport implements IViewport{

@@ -1,13 +1,12 @@
 package com.aukeman.f35game.model;
 
 import java.util.List;
-import java.util.Queue;
 
 import android.content.Context;
 
 import com.aukeman.f35game.IFrameInfo;
+import com.aukeman.f35game.Pool;
 import com.aukeman.f35game.R;
-import com.aukeman.f35game.model.interfaces.IPath;
 import com.aukeman.f35game.model.interfaces.IUpdatable;
 import com.aukeman.f35game.model.path.CompositePath;
 import com.aukeman.f35game.model.path.ShootingSegment;
@@ -20,9 +19,9 @@ import com.aukeman.f35game.view.interfaces.IDrawable;
 
 public class BadguyFactory implements IUpdatable {
 
-	private List<BadguyView> mBadguyPool;
+	private Pool<BadguyView> mBadguys;
 
-	private List<BulletView> mBadguyBulletPool;
+	private Pool<BulletView> mBadguyBullets;
 	
 	private CompositePath mPath;
 	
@@ -32,9 +31,9 @@ public class BadguyFactory implements IUpdatable {
 	
 	int mNextBadguyIndex;
 	
-	public BadguyFactory(Context context, List<BadguyView> badguyPool, List<BulletView> badguyBulletPool, List<Long> badguyTimes){
-		this.mBadguyPool = badguyPool;
-		this.mBadguyBulletPool = badguyBulletPool;
+	public BadguyFactory(Context context, Pool<BadguyView> badguys, Pool<BulletView> badguyBullets, List<Long> badguyTimes){
+		this.mBadguys = badguys;
+		this.mBadguyBullets = badguyBullets;
 	
 		mPath = new CompositePath();
 
@@ -70,29 +69,16 @@ public class BadguyFactory implements IUpdatable {
 		while ( mNextBadguyIndex < mBadguyTimes.size() &&
 				mBadguyTimes.get(mNextBadguyIndex) <= frameInfo.getTopOfFrame() ){
 			
-			boolean availableBadguyFound = false;
-			for ( int idx = 0;
-				  idx < mBadguyPool.size();
-				  ++idx ){
-				
-				BadguyView badguy = mBadguyPool.get(idx);
-				
-				if ( !badguy.isActive() ){
-					
-					badguy.activate(frameInfo, mSprite, -16, 100, mPath);
-					
-					mNextBadguyIndex += 1;
-					availableBadguyFound = true;
-					break;
-				}
-			}
+			BadguyView badguy = mBadguys.getNextAvailable();
 			
-			if ( !availableBadguyFound ){
+			if ( badguy != null ){
+				badguy.activate(frameInfo, mSprite, -16, 100, mPath);
+				mNextBadguyIndex += 1;
+			}
+			else{
 				break;
 			}
-			
 		}
-		
 	}
 
 }

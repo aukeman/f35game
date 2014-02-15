@@ -1,6 +1,6 @@
 package com.aukeman.f35game.model;
 
-import com.aukeman.f35game.model.interfaces.IBoundingBox;
+import com.aukeman.f35game.interfaces.IBoundingBox;
 
 public abstract class Utilities {
 

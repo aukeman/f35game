@@ -1,11 +1,12 @@
 package com.aukeman.f35game.view;
 
 import com.aukeman.f35game.IFrameInfo;
+import com.aukeman.f35game.interfaces.IPoolable;
 import com.aukeman.f35game.model.BadguyModel;
 import com.aukeman.f35game.model.interfaces.IPath;
 import com.aukeman.f35game.view.interfaces.IDrawable;
 
-public class BadguyView extends AbstractView {
+public class BadguyView extends AbstractView implements IPoolable {
 
 	private BadguyModel mModel;
 	
@@ -35,5 +36,10 @@ public class BadguyView extends AbstractView {
 		if ( this.isActive() ){
 			super.draw(mvpMatrix);
 		}
+	}
+	
+	@Override
+	public boolean available() {
+		return !isActive();
 	}
 }
