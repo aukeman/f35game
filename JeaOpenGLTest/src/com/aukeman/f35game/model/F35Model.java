@@ -133,8 +133,9 @@ public class F35Model extends AbstractModel {
 				BulletModel bullet = mBullets.get(bulletIdx);
 
 				if ( !bullet.isActive() ){
-					bullet.moveTo(top - bullet.getHeight(), left + getWidth()/2);
-					bullet.activate();
+					bullet.activate(left + getWidth()/2, 
+							        top - bullet.getHeight(),
+							        0 );
 					break;
 				}
 			}

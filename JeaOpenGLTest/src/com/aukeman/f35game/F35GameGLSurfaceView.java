@@ -109,9 +109,9 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		ownship.getModel().setViewport(mViewport); 		
 		
 		bullets.clear();
-		bullets.add(new BulletView(getContext()));
-		bullets.add(new BulletView(getContext()));
-		bullets.add(new BulletView(getContext()));
+		bullets.add( BulletView.buildGoodguyBullet(getContext()) );
+		bullets.add( BulletView.buildGoodguyBullet(getContext()) );
+		bullets.add( BulletView.buildGoodguyBullet(getContext()) );
 		
 		badguys.add(new BadguyView());
 		badguys.add(new BadguyView());

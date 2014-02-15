@@ -1,5 +1,6 @@
 package com.aukeman.f35game.view;
 
+import com.aukeman.f35game.model.interfaces.IBoundingBox;
 import com.aukeman.f35game.view.interfaces.IViewport;
 
 public class Viewport implements IViewport{
@@ -65,6 +66,11 @@ public class Viewport implements IViewport{
 	@Override
 	public float getRight() {
 		return right;
+	}
+	
+	@Override
+	public boolean overlaps( IBoundingBox other) {
+		return false;
 	}
 
 	public float getScreenWidth() {

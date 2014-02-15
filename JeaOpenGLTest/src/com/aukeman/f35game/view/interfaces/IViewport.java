@@ -1,13 +1,7 @@
 package com.aukeman.f35game.view.interfaces;
 
-public interface IViewport {
+import com.aukeman.f35game.model.interfaces.IBoundingBox;
 
-	public abstract float getTop();
-
-	public abstract float getBottom();
-
-	public abstract float getLeft();
-
-	public abstract float getRight();
-
+public interface IViewport extends IBoundingBox {
+	/* tag interface */
 }

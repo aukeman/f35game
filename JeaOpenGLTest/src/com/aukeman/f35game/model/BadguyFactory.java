@@ -33,15 +33,6 @@ public class BadguyFactory implements IUpdatable {
 	
 		mPath = new CompositePath();
 
-//		mPath.addSegment(new StraightSegment(180.0f, 40f, 25f));
-//		mPath.addSegment(new TurnSegment(180.0f, 45.0f, 40f, 50));
-//		mPath.addSegment(new StraightSegment(225f, 40.0f, 50f));
-//		mPath.addSegment(new TurnSegment(225.0f, -135.0f, 40f, 50));
-//		mPath.addSegment(new StraightSegment(90f, 40.0f, 75f));
-//		mPath.addSegment(new TurnSegment(90.0f, 180.0f, 40f, 25));
-//		mPath.addSegment(new TurnSegment(270.0f, -90.0f, 40f, 25));
-//		mPath.addSegment(new StraightSegment(180f, 40.0f, 100f));
-
 		mPath.addSegment(new StraightSegment(180.0f, 40f, 100f));
 		mPath.addSegment(new TurnSegment(180.0f, -90.0f, 40f, 25));
 
@@ -55,8 +46,6 @@ public class BadguyFactory implements IUpdatable {
 		mPath.addSegment(new TurnSegment(270.0f, -90.0f, 40f, 25));
 
 		mPath.addSegment(new StraightSegment(180.0f, 40f, 200f));
-		
-		
 		
 		mSprite = new Sprite(context, 16, 16, R.drawable.sprite, 2, 2);
 		

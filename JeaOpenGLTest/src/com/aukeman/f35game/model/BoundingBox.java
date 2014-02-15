@@ -1,6 +1,8 @@
 package com.aukeman.f35game.model;
 
-public class BoundingBox {
+import com.aukeman.f35game.model.interfaces.IBoundingBox;
+
+public class BoundingBox implements IBoundingBox {
 	
 		private float mTop;
 		private float mLeft;
@@ -15,6 +17,10 @@ public class BoundingBox {
 			this.mWidth = width;
 		}
 		
+		/* (non-Javadoc)
+		 * @see com.aukeman.f35game.model.IBoundingBox#getTop()
+		 */
+		@Override
 		public float getTop() {
 			return mTop;
 		}
@@ -23,6 +29,10 @@ public class BoundingBox {
 			this.mTop = top;
 		}
 		
+		/* (non-Javadoc)
+		 * @see com.aukeman.f35game.model.IBoundingBox#getLeft()
+		 */
+		@Override
 		public float getLeft() {
 			return mLeft;
 		}
@@ -47,20 +57,27 @@ public class BoundingBox {
 			this.mHeight = height;
 		}
 		
+		/* (non-Javadoc)
+		 * @see com.aukeman.f35game.model.IBoundingBox#getBottom()
+		 */
+		@Override
 		public float getBottom(){
 			return this.mTop + this.mHeight;
 		}
 		
+		/* (non-Javadoc)
+		 * @see com.aukeman.f35game.model.IBoundingBox#getRight()
+		 */
+		@Override
 		public float getRight(){
 			return this.mLeft + this.mWidth;
 		}
 		
-		public boolean overlaps( BoundingBox other ){
-			return ( this.getLeft() < other.getLeft() + other.getWidth() &&
-					 other.getLeft() < this.getLeft() + this.getWidth()  &&
-					 this.getTop()  < other.getTop() + other.getHeight()&&
-					 other.getTop() < this.getTop() + this.getHeight() ); 
+		/* (non-Javadoc)
+		 * @see com.aukeman.f35game.model.IBoundingBox#overlaps(com.aukeman.f35game.model.BoundingBox)
+		 */
+		@Override
+		public boolean overlaps( IBoundingBox other ){
+			return Utilities.overlaps(this, other);
 		}
-
-		
 }

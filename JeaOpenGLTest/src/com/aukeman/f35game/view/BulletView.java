@@ -4,23 +4,46 @@ import android.content.Context;
 
 import com.aukeman.f35game.R;
 import com.aukeman.f35game.model.BulletModel;
+import com.aukeman.f35game.view.interfaces.IDrawable;
 
 public class BulletView extends AbstractView {
 
-	BulletModel mModel;
-
-	Sprite mSprite;
+	private static IDrawable ourGoodguyBulletSprite = null;
 	
-	public BulletView(Context context){
-		this.mModel = new BulletModel(8, 2);
-		this.mSprite = new Sprite(context, mModel.getWidth(), mModel.getHeight(), R.drawable.bullet, 1, 1);
-
-		setModel(this.mModel);
-		setDrawable(this.mSprite);
+	private static IDrawable ourBadguyBulletSprite = null;
+	
+	public static BulletView buildGoodguyBullet(Context context){
+		
+		BulletModel model = new BulletModel(8f, 2f, 220f);
+		
+		if ( ourGoodguyBulletSprite == null ){
+			ourGoodguyBulletSprite = new Sprite(context, model.getWidth(), model.getHeight(), R.drawable.bullet, 1, 1);
+		}
+		
+		return new BulletView(model, ourGoodguyBulletSprite);
 	}
 	
-	@Override
-	public void draw(float[] mvpMatrix) {
+	public static BulletView BuildBadguyBullet(Context context){
+
+		BulletModel model = new BulletModel(8f, 8f, 60f);
+		
+		if ( ourBadguyBulletSprite == null ){
+			ourBadguyBulletSprite = new Sprite(context, model.getWidth(), model.getHeight(), R.drawable.badguy_bullet, 1, 1);
+		}
+		
+		return new BulletView(model, ourBadguyBulletSprite);
+	}
+	
+	private BulletModel mModel;
+	
+	private BulletView(BulletModel model, IDrawable drawable){
+		this.mModel = model;
+		
+		setModel(this.mModel);
+		setDrawable(drawable);
+	}
+	
+	public void draw(float[] mvpMatrix){
 		if ( this.mModel.isActive() ){
 			super.draw(mvpMatrix);
 		}
