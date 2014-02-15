@@ -61,6 +61,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 	
 	private List<BadguyView> badguys;
 	
+	private List<BulletView> badguyBullets;
+
 	private BadguyFactory badguyFactory;
 	
 	public F35GameGLSurfaceView(Context context) {
@@ -80,6 +82,8 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		bullets = new ArrayList<BulletView>();
 		
 		badguys = new ArrayList<BadguyView>();
+		
+		badguyBullets = new ArrayList<BulletView>();
 		
 		mFrameInfo = new FrameInfo(false);
 		
@@ -115,6 +119,18 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		badguys.add(new BadguyView());
 		badguys.add(new BadguyView());
+		
+		badguyBullets.clear();
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
+		badguyBullets.add( BulletView.BuildBadguyBullet(getContext()) );
 
 		List<Long> badguyTimes = new ArrayList<Long>();
 		badguyTimes.add(2000L);
@@ -124,7 +140,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 //		badguyTimes.add(25000L);
 //		badguyTimes.add(30000L);
 		
-		badguyFactory = new BadguyFactory(getContext(), badguys, badguyTimes);
+		badguyFactory = new BadguyFactory(getContext(), badguys, badguyBullets, badguyTimes);
 		
 		 font = new Font(getContext());
 		 

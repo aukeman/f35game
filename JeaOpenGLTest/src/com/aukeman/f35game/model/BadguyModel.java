@@ -2,6 +2,7 @@ package com.aukeman.f35game.model;
 
 import com.aukeman.f35game.IFrameInfo;
 import com.aukeman.f35game.model.interfaces.IPath;
+import com.aukeman.f35game.view.BulletView;
 
 public class BadguyModel extends AbstractModel {
 
@@ -62,8 +63,13 @@ public class BadguyModel extends AbstractModel {
 		if ( isActive() ){
 			float top = mPath.getY(mStartTime, mStartLeft, mStartTop, frameInfo);
 			float left = mPath.getX(mStartTime, mStartLeft, mStartTop, frameInfo);
+			boolean shoot = mPath.getShoot(mStartTime, mStartLeft, mStartTop, frameInfo);
 			
 			moveTo(top, left);
+
+			if ( shoot ){
+				
+			}
 			
 			mHeading = mPath.getHeading(mStartTime, mStartLeft, mStartTop, frameInfo);
 			mPitch = mPath.getPitch(mStartTime, mStartLeft, mStartTop, frameInfo);

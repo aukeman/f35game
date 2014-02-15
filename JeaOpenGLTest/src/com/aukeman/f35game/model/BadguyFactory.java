@@ -10,15 +10,19 @@ import com.aukeman.f35game.R;
 import com.aukeman.f35game.model.interfaces.IPath;
 import com.aukeman.f35game.model.interfaces.IUpdatable;
 import com.aukeman.f35game.model.path.CompositePath;
+import com.aukeman.f35game.model.path.ShootingSegment;
 import com.aukeman.f35game.model.path.StraightSegment;
 import com.aukeman.f35game.model.path.TurnSegment;
 import com.aukeman.f35game.view.BadguyView;
+import com.aukeman.f35game.view.BulletView;
 import com.aukeman.f35game.view.Sprite;
 import com.aukeman.f35game.view.interfaces.IDrawable;
 
 public class BadguyFactory implements IUpdatable {
 
 	private List<BadguyView> mBadguyPool;
+
+	private List<BulletView> mBadguyBulletPool;
 	
 	private CompositePath mPath;
 	
@@ -28,21 +32,26 @@ public class BadguyFactory implements IUpdatable {
 	
 	int mNextBadguyIndex;
 	
-	public BadguyFactory(Context context, List<BadguyView> badguyPool, List<Long> badguyTimes){
+	public BadguyFactory(Context context, List<BadguyView> badguyPool, List<BulletView> badguyBulletPool, List<Long> badguyTimes){
 		this.mBadguyPool = badguyPool;
+		this.mBadguyBulletPool = badguyBulletPool;
 	
 		mPath = new CompositePath();
 
 		mPath.addSegment(new StraightSegment(180.0f, 40f, 100f));
+		mPath.addSegment(new ShootingSegment() );
 		mPath.addSegment(new TurnSegment(180.0f, -90.0f, 40f, 25));
 
 		mPath.addSegment(new StraightSegment(90.0f, 40f, 50f));
+		mPath.addSegment(new ShootingSegment() );
 		mPath.addSegment(new TurnSegment(90.0f, -90.0f, 40f, 25));
 		
 		mPath.addSegment(new StraightSegment(0.0f, 40f, 50f));
+		mPath.addSegment(new ShootingSegment() );
 		mPath.addSegment(new TurnSegment(0.0f, -90.0f, 40f, 25));
 		
 		mPath.addSegment(new StraightSegment(270.0f, 40f, 50f));
+		mPath.addSegment(new ShootingSegment() );
 		mPath.addSegment(new TurnSegment(270.0f, -90.0f, 40f, 25));
 
 		mPath.addSegment(new StraightSegment(180.0f, 40f, 200f));
