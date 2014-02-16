@@ -19,6 +19,8 @@ import com.aukeman.f35game.view.interfaces.IDrawable;
 
 public class BadguyFactory implements IUpdatable {
 
+	private F35Model mOwnshipModel;
+	
 	private Pool<BadguyView> mBadguys;
 
 	private Pool<BulletView> mBadguyBullets;
@@ -31,7 +33,10 @@ public class BadguyFactory implements IUpdatable {
 	
 	int mNextBadguyIndex;
 	
-	public BadguyFactory(Context context, Pool<BadguyView> badguys, Pool<BulletView> badguyBullets, List<Long> badguyTimes){
+	public BadguyFactory(Context context, F35Model ownshipModel, Pool<BadguyView> badguys, Pool<BulletView> badguyBullets, List<Long> badguyTimes){
+
+		this.mOwnshipModel = ownshipModel;
+		
 		this.mBadguys = badguys;
 		this.mBadguyBullets = badguyBullets;
 	
@@ -72,7 +77,7 @@ public class BadguyFactory implements IUpdatable {
 			BadguyView badguy = mBadguys.getNextAvailable();
 			
 			if ( badguy != null ){
-				badguy.activate(frameInfo, mSprite, -16, 100, mPath);
+				badguy.activate(frameInfo, mSprite, -16, 100, mPath, mOwnshipModel, mBadguyBullets);
 				mNextBadguyIndex += 1;
 			}
 			else{

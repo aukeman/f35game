@@ -38,52 +38,52 @@ public class CompositePath implements IPath{
 	public float getX(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 		
-		return calculateFloatValue(ourGetX, startTime, startX, startY, frameInfo);
+		return calculateValue(ourGetX, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
 	public float getY(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateFloatValue(ourGetY, startTime, startX, startY, frameInfo);
+		return calculateValue(ourGetY, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
 	public float getHeading(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateFloatValue(ourGetHeading, startTime, startX, startY, frameInfo);
+		return calculateValue(ourGetHeading, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
 	public float getPitch(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateFloatValue(ourGetPitch, startTime, startX, startY, frameInfo);
+		return calculateValue(ourGetPitch, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
 	public float getRoll(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateFloatValue(ourGetRoll, startTime, startX, startY, frameInfo);
+		return calculateValue(ourGetRoll, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
 	public boolean getShoot(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateBooleanValue(ourGetShoot, startTime, startX, startY, frameInfo);
+		return calculateValueSinceLastFrame(ourGetShoot, startTime, startX, startY, frameInfo);
 	}
 
 	@Override
 	public boolean isComplete(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
 
-		return calculateBooleanValue(ourIsComplete, startTime, startX, startY, frameInfo);
+		return calculateValue(ourIsComplete, startTime, startX, startY, frameInfo);
 	}
 
-	private float calculateFloatValue(IGetFloatValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
+	private float calculateValue(IGetFloatValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
 
 		float result = 0.0f;
 		
@@ -108,7 +108,7 @@ public class CompositePath implements IPath{
 		return result;
 	}
 	
-	private boolean calculateBooleanValue(IGetBooleanValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
+	private boolean calculateValue(IGetBooleanValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
 
 		boolean result = false;
 
@@ -128,6 +128,49 @@ public class CompositePath implements IPath{
 				startX = segment.getFinalX(startX);
 				startY = segment.getFinalY(startY);
 			}
+		}
+		
+		return result;
+	}
+	
+	private boolean calculateValueSinceLastFrame(IGetBooleanValue getter, long startTime, float startX, float startY, IFrameInfo frameInfo){
+
+		boolean result = false;
+
+		IPathSegment resultSegment = null;
+
+		// TODO: really need to be smarter about 
+		// how we handle shooting "segments"
+		
+		for ( int idx = 0;
+			  idx < mSegments.size();
+			  ++idx ){
+
+			IPathSegment segment = mSegments.get(idx);
+			
+//			boolean completedThisFrame = segment.isComplete(startTime, startX, startY, frameInfo);
+//			boolean completedLastFrame = segment.isCompleteSinceLastFrame(startTime, startX, startY, frameInfo);
+			
+			if ( idx == (mSegments.size()-1) ||
+				 (frameInfo.getTopOfLastFrame() <= startTime &&
+				  startTime + segment.getDuration() < frameInfo.getTopOfFrame()) ){
+
+				resultSegment = segment;
+				
+				//result = getter.calculate(segment, startTime, startX, startY, frameInfo);
+			}
+			else if ( frameInfo.getTopOfFrame() < startTime + segment.getDuration() ){
+				break;
+			}
+			else{
+				startTime += segment.getDuration();
+				startX = segment.getFinalX(startX);
+				startY = segment.getFinalY(startY);
+			}
+		}
+		
+		if ( resultSegment != null ){
+			result = getter.calculate(resultSegment, startTime, startX, startY, frameInfo);
 		}
 		
 		return result;

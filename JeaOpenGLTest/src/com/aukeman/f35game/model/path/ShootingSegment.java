@@ -37,5 +37,11 @@ public class ShootingSegment extends AbstractPathSegment{
 	public float calculateYAtPercentComplete(float percent) {
 		return 0;
 	}
+	
+	@Override
+	public boolean isComplete(long startTime, float startX, float startY,
+			IFrameInfo frameInfo) {
+		return super.isComplete(startTime, startX, startY, frameInfo);
+	}
 
 }

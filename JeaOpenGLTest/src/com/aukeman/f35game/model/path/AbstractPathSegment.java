@@ -66,7 +66,13 @@ public abstract class AbstractPathSegment implements IPathSegment {
 	@Override
 	public boolean isComplete(long startTime, float startX, float startY,
 			IFrameInfo frameInfo) {
-		return (1.0 <= getPercentComplete(startTime, frameInfo));
+		return (1.0f <= getPercentComplete(startTime, frameInfo));
+	}
+	
+	@Override
+	public boolean isCompleteSinceLastFrame(long startTime, float startX, float startY,
+			IFrameInfo frameInfo){
+		return (1.0f <= getPercentCompleteLastFrame(startTime, frameInfo));
 	}
 
 	@Override
@@ -85,7 +91,24 @@ public abstract class AbstractPathSegment implements IPathSegment {
 	}
 	
 	public float getPercentComplete(long startTime, IFrameInfo frameInfo){
-		return (float)(frameInfo.getTopOfFrame() - startTime) / mDuration;
+		
+		if ( 0 < mDuration ) {
+			return (float)(frameInfo.getTopOfFrame() - startTime) / mDuration;
+		}
+		else {
+			return startTime < frameInfo.getTopOfFrame() ? 1.0f : 0.0f;
+		}
+		
+	}
+	
+	public float getPercentCompleteLastFrame(long startTime, IFrameInfo frameInfo){
+
+		if ( 0 < mDuration ) {
+			return (float)(frameInfo.getTopOfLastFrame() - startTime) / mDuration;
+		}
+		else {
+			return startTime < frameInfo.getTopOfLastFrame() ? 1.0f : 0.0f;
+		}
 	}
 
 }

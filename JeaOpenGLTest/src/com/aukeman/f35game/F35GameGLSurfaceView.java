@@ -140,7 +140,7 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 //		badguyTimes.add(25000L);
 //		badguyTimes.add(30000L);
 		
-		badguyFactory = new BadguyFactory(getContext(), badguys, badguyBullets, badguyTimes);
+		badguyFactory = new BadguyFactory(getContext(), ownship.getModel(), badguys, badguyBullets, badguyTimes);
 		
 		 font = new Font(getContext());
 		 
@@ -178,6 +178,12 @@ public class F35GameGLSurfaceView extends GLSurfaceView implements GLSurfaceView
 		
 		for ( BulletView bullet : bullets ){
 			ownship.getModel().addBullet(bullet.getModel());
+			bullet.getModel().setViewport(mViewport);
+			mUpdatables.add(bullet.getModel());
+			mDrawables.add(bullet);
+		}
+		
+		for ( BulletView bullet : badguyBullets ){
 			bullet.getModel().setViewport(mViewport);
 			mUpdatables.add(bullet.getModel());
 			mDrawables.add(bullet);
